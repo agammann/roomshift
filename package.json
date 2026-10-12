@@ -1,0 +1,33 @@
+{
+  "name": "roomshift",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "test": "node --experimental-strip-types --test src/model.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@iwsdk/core": "1.0.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "three": "npm:super-three@0.181.0"
+  },
+  "devDependencies": {
+    "@iwsdk/scene-composition": "1.0.1",
+    "@iwsdk/vite-plugin-dev": "1.0.1",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "@types/three": "0.181.0",
+    "@vitejs/plugin-react": "5.0.4",
+    "three-viewport-gizmo": "2.2.0",
+    "typescript": "5.9.3",
+    "vite": "7.1.9"
+  },
+  "overrides": {
+    "three": "npm:super-three@0.181.0"
+  }
+}
