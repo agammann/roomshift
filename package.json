@@ -21,7 +21,7 @@
     "@iwsdk/vite-plugin-dev": "1.0.1",
     "@types/react": "19.2.0",
     "@types/react-dom": "19.2.0",
-    "@types/three": "0.181.0",
+    "@types/three": "0.186.0",
     "@vitejs/plugin-react": "5.0.4",
     "three-viewport-gizmo": "2.2.0",
     "typescript": "5.9.3",
