@@ -14,13 +14,13 @@ importers:
     dependencies:
       '@iwsdk/core':
         specifier: 1.0.1
-        version: 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.2.0)(react@19.2.0)
+        version: 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)
       react:
-        specifier: 19.2.0
-        version: 19.2.0
+        specifier: 19.3.1
+        version: 19.3.1
       react-dom:
         specifier: 19.2.0
-        version: 19.2.0(react@19.2.0)
+        version: 19.2.0(react@19.3.1)
       three:
         specifier: npm:super-three@0.181.0
         version: super-three@0.181.0
@@ -30,13 +30,13 @@ importers:
         version: 1.0.1
       '@iwsdk/vite-plugin-dev':
         specifier: 1.0.1
-        version: 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(@types/react@19.2.0)(iwer@2.5.0)(react@19.2.0)(use-sync-external-store@1.7.0(react@19.2.0))(vite@7.3.7)
+        version: 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(@types/react@19.3.0)(iwer@2.5.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))(vite@7.3.7)
       '@types/react':
-        specifier: 19.2.0
-        version: 19.2.0
+        specifier: 19.3.0
+        version: 19.3.0
       '@types/react-dom':
         specifier: 19.2.0
-        version: 19.2.0(@types/react@19.2.0)
+        version: 19.2.0(@types/react@19.3.0)
       '@types/three':
         specifier: 0.181.0
         version: 0.181.0
@@ -813,8 +813,8 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react@19.2.0':
-    resolution: {integrity: sha512-1LOH8xovvsKsCBq1wnT4ntDUdCJKmnEakhsuoUSy6ExlHCkGP2hqnatagYTgFk6oeL0VU31u7SNjunPN+GchtA==}
+  '@types/react@19.3.0':
+    resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
 
   '@types/stats.js@0.17.4':
     resolution: {integrity: sha512-jIBvWWShCvlBqBNIZt0KAshWpvSjhkwkEu4ZUcASoAvhmrgAUI2t1dXrjSL4xXVLB4FznPrIsX3nKXFl/Dt4vA==}
@@ -858,6 +858,9 @@ packages:
     resolution: {integrity: sha512-DdH81/zPLVS11EUgWq3tEu/xn+EzljlMYooDNdzWEnFha3R3NBMpMV1UqYIpjYHV/SgpFKMIX1Oh7o06SjM/oA==}
     engines: {node: '>=18'}
 
+  camelize@1.0.1:
+    resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
+
   caniuse-lite@1.0.30001815:
     resolution: {integrity: sha512-uDybUEyfgbyJJ93J1vikTylBX31AkdVYeVPeffMQpf8XN7hSfr0oZOn4VFOIMNvtU5+rHvC5Udg2TgtJKHm23Q==}
 
@@ -876,6 +879,13 @@ packages:
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
+
+  css-color-keywords@1.0.0:
+    resolution: {integrity: sha512-FyyrDHZKEjXDpNJYvVsV960FiqQyXc/LlYmsxl2BcdMb2WPx0OGRVgTg55rPSyLSNMqP52R9r8geSp7apN3Ofg==}
+    engines: {node: '>=4'}
+
+  css-to-react-native@3.2.0:
+    resolution: {integrity: sha512-e8RKaLXMOFii+02mOlqwjbD00KSEKqblnpO9e++1aXS1fPQOpS1YoqdVHBqPjHNoxeF2mimzVqawm2KCbEdtHQ==}
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
@@ -1050,6 +1060,9 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
+  postcss-value-parser@4.2.0:
+    resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
+
   postcss@8.5.29:
     resolution: {integrity: sha512-49cGhUbXj8Qenv0iTMxA1cFBzxXoctpC9Ujd77t1WcbJIr6nF/eI7g/8MgxrYldFRuAXvja7xQRwavoW7kgrxQ==}
     engines: {node: ^10 || ^12 || >=14}
@@ -1083,12 +1096,12 @@ packages:
     resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
     engines: {node: '>=0.10.0'}
 
-  react@19.2.0:
-    resolution: {integrity: sha512-tmbWg6W31tQLeB5cdIBOicJDJRR2KzXsV7uSK9iNfLWQ5bIZfxuPEHp7M8wiHyHnn0DD1i7w3Zmin0FtkrwoCQ==}
-    engines: {node: '>=0.10.0'}
-
   react@19.3.0:
     resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
+    engines: {node: '>=0.10.0'}
+
+  react@19.3.1:
+    resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
     engines: {node: '>=0.10.0'}
 
   require-in-the-middle@8.0.1:
@@ -1140,13 +1153,10 @@ packages:
     resolution: {integrity: sha512-vAX79sfpmUerP9fsTTxoTrBDE0RuO4ahjInyWYoohNgqrdg63Ms4q6FJ/o2Fyity82NU3cujOT8Ewl9TThBdwg==}
     engines: {node: '>= 16'}
     peerDependencies:
-      css-to-react-native: '>= 3.2.0'
       react: '>= 16.8.0'
       react-dom: '>= 16.8.0'
       react-native: '>= 0.68.0'
     peerDependenciesMeta:
-      css-to-react-native:
-        optional: true
       react-dom:
         optional: true
       react-native:
@@ -1157,9 +1167,6 @@ packages:
 
   super-three@0.181.0:
     resolution: {integrity: sha512-ffemt+MKDPVVkQwG1nzW/5SXHROVqcXCCj/sR6V8nlt7X9qy8vEngoVyeHmsuXjwuSWBBihlVIm+8QUZ1MJDfg==}
-
-  super-three@0.184.0:
-    resolution: {integrity: sha512-9NSv1Ow/k/hevFC/VLeFoejnZSw72iz4e8Nt5LuDiSrkVinh7+r7lfb7Fxsl3aE+2yBP0tPRk1zLqX/aq6EYnQ==}
 
   three-mesh-bvh@0.9.16:
     resolution: {integrity: sha512-2RK+5MJOaiHJhopURn2CUkOHiF3tFloD0uZBfhebV0CKB7mgVLpWUWaDpOyhNJRDkKKe7x4rRfTHZ32GwpXdkw==}
@@ -1630,32 +1637,31 @@ snapshots:
   '@img/sharp-win32-x64@0.35.5':
     optional: true
 
-  '@iwer/devui@2.5.0(@types/react@19.2.0)(iwer@2.5.0)(use-sync-external-store@1.7.0(react@19.2.0))':
+  '@iwer/devui@2.5.0(@types/react@19.3.0)(iwer@2.5.0)(use-sync-external-store@1.7.0(react@19.3.1))':
     dependencies:
-      '@pmndrs/handle': 6.6.31(@types/react@19.2.0)(react@19.3.0)
+      '@pmndrs/handle': 6.6.31(@types/react@19.3.0)(react@19.3.0)
       '@pmndrs/pointer-events': 6.6.31
       iwer: 2.5.0
-      lucide-react: 1.55.0(@types/react@19.2.0)(react@19.3.0)
+      lucide-react: 1.55.0(@types/react@19.3.0)(react@19.3.0)
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
       styled-components: 6.5.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      three: super-three@0.184.0
-      zustand: 5.0.15(@types/react@19.2.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.2.0))
+      three: super-three@0.181.0
+      zustand: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.1))
     transitivePeerDependencies:
       - '@types/react'
-      - css-to-react-native
       - immer
       - react-native
       - use-sync-external-store
 
-  '@iwsdk/core@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.2.0)(react@19.2.0)':
+  '@iwsdk/core@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)':
     dependencies:
       '@babylonjs/havok': 1.3.14
       '@drawcall/uikitml': 0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(super-three@0.181.0)
       '@iwsdk/locomotor': 1.0.1(super-three@0.181.0)(three-mesh-bvh@0.9.16(super-three@0.181.0))
       '@iwsdk/scene-composition': 1.0.1
       '@iwsdk/xr-input': 1.0.1(super-three@0.181.0)
-      '@pmndrs/handle': 6.6.31(@types/react@19.2.0)(react@19.2.0)
+      '@pmndrs/handle': 6.6.31(@types/react@19.3.0)(react@19.3.1)
       '@pmndrs/pointer-events': 6.6.31
       '@pmndrs/uikit': 1.0.76(super-three@0.181.0)
       '@preact/signals-core': 1.14.4
@@ -1679,11 +1685,11 @@ snapshots:
 
   '@iwsdk/scene-composition@1.0.1': {}
 
-  '@iwsdk/vite-plugin-dev@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(@types/react@19.2.0)(iwer@2.5.0)(react@19.2.0)(use-sync-external-store@1.7.0(react@19.2.0))(vite@7.3.7)':
+  '@iwsdk/vite-plugin-dev@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(@types/react@19.3.0)(iwer@2.5.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))(vite@7.3.7)':
     dependencies:
       '@drawcall/uikitml': 0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(super-three@0.181.0)
-      '@iwer/devui': 2.5.0(@types/react@19.2.0)(iwer@2.5.0)(use-sync-external-store@1.7.0(react@19.2.0))
-      '@iwsdk/core': 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.2.0)(react@19.2.0)
+      '@iwer/devui': 2.5.0(@types/react@19.3.0)(iwer@2.5.0)(use-sync-external-store@1.7.0(react@19.3.1))
+      '@iwsdk/core': 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)
       '@iwsdk/scene-composition': 1.0.1
       '@preact/signals-core': 1.14.4
       '@vitejs/plugin-basic-ssl': 2.3.0(vite@7.3.7)
@@ -1703,7 +1709,6 @@ snapshots:
       - '@types/node'
       - '@types/react'
       - bufferutil
-      - css-to-react-native
       - immer
       - iwer
       - preact-render-to-string
@@ -1784,19 +1789,19 @@ snapshots:
 
   '@opentelemetry/semantic-conventions@1.43.0': {}
 
-  '@pmndrs/handle@6.6.31(@types/react@19.2.0)(react@19.2.0)':
+  '@pmndrs/handle@6.6.31(@types/react@19.3.0)(react@19.3.0)':
     dependencies:
       '@pmndrs/pointer-events': 6.6.31
-      zustand: 4.5.7(@types/react@19.2.0)(react@19.2.0)
+      zustand: 4.5.7(@types/react@19.3.0)(react@19.3.0)
     transitivePeerDependencies:
       - '@types/react'
       - immer
       - react
 
-  '@pmndrs/handle@6.6.31(@types/react@19.2.0)(react@19.3.0)':
+  '@pmndrs/handle@6.6.31(@types/react@19.3.0)(react@19.3.1)':
     dependencies:
       '@pmndrs/pointer-events': 6.6.31
-      zustand: 4.5.7(@types/react@19.2.0)(react@19.3.0)
+      zustand: 4.5.7(@types/react@19.3.0)(react@19.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - immer
@@ -1987,11 +1992,11 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
-  '@types/react-dom@19.2.0(@types/react@19.2.0)':
+  '@types/react-dom@19.2.0(@types/react@19.3.0)':
     dependencies:
-      '@types/react': 19.2.0
+      '@types/react': 19.3.0
 
-  '@types/react@19.2.0':
+  '@types/react@19.3.0':
     dependencies:
       csstype: 3.2.3
 
@@ -2045,6 +2050,8 @@ snapshots:
     dependencies:
       run-applescript: 7.1.0
 
+  camelize@1.0.1: {}
+
   caniuse-lite@1.0.30001815: {}
 
   cjs-module-lexer@2.3.0: {}
@@ -2056,6 +2063,14 @@ snapshots:
   commander@2.20.3: {}
 
   convert-source-map@2.0.0: {}
+
+  css-color-keywords@1.0.0: {}
+
+  css-to-react-native@3.2.0:
+    dependencies:
+      camelize: 1.0.1
+      css-color-keywords: 1.0.0
+      postcss-value-parser: 4.2.0
 
   csstype@3.2.3: {}
 
@@ -2161,11 +2176,11 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@1.55.0(@types/react@19.2.0)(react@19.3.0):
+  lucide-react@1.55.0(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       react: 19.3.0
     optionalDependencies:
-      '@types/react': 19.2.0
+      '@types/react': 19.3.0
 
   lucide@0.468.0: {}
 
@@ -2205,6 +2220,8 @@ snapshots:
     dependencies:
       playwright-core: 1.64.0
 
+  postcss-value-parser@4.2.0: {}
+
   postcss@8.5.29:
     dependencies:
       nanoid: 3.3.20
@@ -2220,9 +2237,9 @@ snapshots:
       discontinuous-range: 1.0.0
       ret: 0.1.15
 
-  react-dom@19.2.0(react@19.2.0):
+  react-dom@19.2.0(react@19.3.1):
     dependencies:
-      react: 19.2.0
+      react: 19.3.1
       scheduler: 0.27.0
 
   react-dom@19.3.0(react@19.3.0):
@@ -2232,9 +2249,9 @@ snapshots:
 
   react-refresh@0.17.0: {}
 
-  react@19.2.0: {}
-
   react@19.3.0: {}
+
+  react@19.3.1: {}
 
   require-in-the-middle@8.0.1:
     dependencies:
@@ -2324,6 +2341,7 @@ snapshots:
   styled-components@6.5.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
       '@emotion/is-prop-valid': 1.4.0
+      css-to-react-native: 3.2.0
       csstype: 3.2.3
       react: 19.3.0
       stylis: 4.3.6
@@ -2333,8 +2351,6 @@ snapshots:
   stylis@4.3.6: {}
 
   super-three@0.181.0: {}
-
-  super-three@0.184.0: {}
 
   three-mesh-bvh@0.9.16(super-three@0.181.0):
     dependencies:
@@ -2360,13 +2376,13 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  use-sync-external-store@1.7.0(react@19.2.0):
-    dependencies:
-      react: 19.2.0
-
   use-sync-external-store@1.7.0(react@19.3.0):
     dependencies:
       react: 19.3.0
+
+  use-sync-external-store@1.7.0(react@19.3.1):
+    dependencies:
+      react: 19.3.1
 
   vite@7.3.7:
     dependencies:
@@ -2395,22 +2411,22 @@ snapshots:
 
   zod@4.6.5: {}
 
-  zustand@4.5.7(@types/react@19.2.0)(react@19.2.0):
-    dependencies:
-      use-sync-external-store: 1.7.0(react@19.2.0)
-    optionalDependencies:
-      '@types/react': 19.2.0
-      react: 19.2.0
-
-  zustand@4.5.7(@types/react@19.2.0)(react@19.3.0):
+  zustand@4.5.7(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       use-sync-external-store: 1.7.0(react@19.3.0)
     optionalDependencies:
-      '@types/react': 19.2.0
+      '@types/react': 19.3.0
       react: 19.3.0
 
-  zustand@5.0.15(@types/react@19.2.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.2.0)):
+  zustand@4.5.7(@types/react@19.3.0)(react@19.3.1):
+    dependencies:
+      use-sync-external-store: 1.7.0(react@19.3.1)
     optionalDependencies:
-      '@types/react': 19.2.0
+      '@types/react': 19.3.0
+      react: 19.3.1
+
+  zustand@5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.1)):
+    optionalDependencies:
+      '@types/react': 19.3.0
       react: 19.3.0
-      use-sync-external-store: 1.7.0(react@19.2.0)
+      use-sync-external-store: 1.7.0(react@19.3.1)
