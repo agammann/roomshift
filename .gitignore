@@ -3,3 +3,7 @@ dist/
 .iwsdk/
 .DS_Store
 *.log
+reports/
+playwright-report/
+test-results/
+roomshift-production.tgz

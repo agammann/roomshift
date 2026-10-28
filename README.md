@@ -26,7 +26,7 @@ pnpm build
 pnpm preview
 ```
 
-`pnpm test` runs the 17 domain tests. `pnpm build` checks TypeScript and writes the production site to `dist/`. `pnpm preview` serves that build at **http://127.0.0.1:4173/**; the development hand emulator is intentionally absent from production builds.
+`pnpm test` runs the 19 domain tests. `pnpm build` checks TypeScript and writes the production site to `dist/`. `pnpm preview` serves that build at **http://127.0.0.1:4173/**; the development hand emulator is intentionally absent from production builds.
 
 ## Plan a room
 
@@ -86,3 +86,9 @@ Roomshift is submitted to the [Meta VR Start Developer Competition 2026](https:/
 MIT; see [LICENSE](LICENSE). Third-party dependencies retain their own licenses.
 
 Developed by [agammann](https://github.com/agammann).
+
+## Routine CI and platform evidence
+
+`Verify production` runs model tests, TypeScript, a frozen production build, and sandboxed Chromium tests against a production archive extracted outside the source checkout. Browser fixtures use fresh local storage, no model/provider calls and no injected WebXR runtime. They cover edit/restart, undo/redo, repeated dialog dismissal, invalid input, art import, SVG export, unreadable data preservation and storage-quota recovery. Run them locally after `pnpm build` with `pnpm exec playwright install chromium && pnpm test:browser`.
+
+`pnpm manifest` records production asset sizes and SHA-256 identities in `reports/asset-manifest.json`. These bytes are not measured load time, frame time or a performance threshold. CI is a desktop/browser functional gate, **not** an IWER interaction or Quest hardware gate. A physical Quest model, Quest OS/Browser versions, secure test origin, and measured loading/frame/thermal/hand-tracking observations are still required before performance optimization or headset claims.
