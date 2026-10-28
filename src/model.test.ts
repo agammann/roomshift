@@ -235,3 +235,33 @@ test('SVG contains measured geometry and safely escapes names and XML attributes
   assert.match(svg, /x -60 cm, z -85 cm/);
   assert.equal((svg.match(/<polygon /g) ?? []).length, 6);
 });
+
+test('autosave preserves corrupt, empty and newer-schema storage until an explicit external reset', () => {
+  for (const original of ['{broken', '', '{"version":2,"state":{}}']) {
+    const storage = new MemoryStorage();
+    storage.setItem(STORAGE_KEY, original);
+    const store = createPlannerStore(initialState, storage);
+    assert.equal(store.load(), false);
+    store.setRoom({ width: 6.2 });
+    assert.equal(store.save(), false);
+    assert.equal(storage.getItem(STORAGE_KEY), original);
+    assert.ok(exportPlanSvg(activeLayout(store.getState())).includes('620'));
+    const restarted = createPlannerStore(initialState, storage);
+    assert.equal(restarted.load(), false);
+    assert.equal(restarted.save(), false);
+    assert.equal(storage.getItem(STORAGE_KEY), original);
+    // Only the owner removing/replacing the unreadable entry permits saving again.
+    storage.values.delete(STORAGE_KEY);
+    assert.equal(store.save(), true);
+    assert.equal(deserializeState(storage.getItem(STORAGE_KEY)!)?.layouts[0].room.width, 6.2);
+  }
+});
+
+test('a failed storage read never permits autosave to replace unseen data', () => {
+  let writes = 0;
+  const storage: StorageLike = { getItem() { throw Error('unavailable'); }, setItem() { writes++; } };
+  const store = createPlannerStore(initialState, storage);
+  assert.equal(store.load(), false);
+  assert.equal(store.save(), false);
+  assert.equal(writes, 0);
+});

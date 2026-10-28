@@ -64,6 +64,7 @@ Simulator testing exercises interaction and state changes. It does not establish
 - Room width and depth accept 2–20 meters, and room height accepts 1.8–5 meters. Item width/depth accept 2–1000 centimeters, and item height accepts 2–500 centimeters.
 - Layouts and art photos are saved to this browser origin's `localStorage` under `roomshift.v1`. The editor loads valid saved work on startup and autosaves layout changes. Storage failures appear in the save status.
 - Art uploads accept JPG, PNG, or WebP up to 5 MB, decode locally, and are resized to at most 1000 pixels on the longest side. Stored image data is also bounded and checked for a supported raster type.
+- Unreadable or newer-version saved data is never replaced by autosave or Retry save. Editing and SVG export still work in memory, but are not an editable backup of that unreadable data. Preserve the original `roomshift.v1` entry before explicitly clearing site storage to start again.
 - Clearing browser data removes saved arrangements. Exported SVGs are readable plans, not editable project backups, and they do not embed art photos.
 
 ## Implementation

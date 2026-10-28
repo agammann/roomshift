@@ -381,7 +381,14 @@ export function createPlannerStore(start: AppState = initialState, storage: Stor
     canRedo: () => future.length > 0 && (editStart === null || contentKey(editStart) === contentKey(state)),
     save: () => {
       if (!storage) return false;
-      try { storage.setItem(STORAGE_KEY, serializeState(state)); return true; } catch { return false; }
+      try {
+        // A rejected startup load must not become permission to overwrite its bytes.
+        // Re-read before every write, including retries after an unavailable store.
+        const existing = storage.getItem(STORAGE_KEY);
+        if (existing !== null && !deserializeState(existing)) return false;
+        storage.setItem(STORAGE_KEY, serializeState(state));
+        return true;
+      } catch { return false; }
     },
     load: () => {
       if (!storage) return false;
