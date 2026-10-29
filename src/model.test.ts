@@ -235,3 +235,85 @@ test('SVG contains measured geometry and safely escapes names and XML attributes
   assert.match(svg, /x -60 cm, z -85 cm/);
   assert.equal((svg.match(/<polygon /g) ?? []).length, 6);
 });
+
+test('autosave preserves corrupt, empty and newer-schema storage until an explicit external reset', () => {
+  for (const original of ['{broken', '', '{"version":2,"state":{}}']) {
+    const storage = new MemoryStorage();
+    storage.setItem(STORAGE_KEY, original);
+    const store = createPlannerStore(initialState, storage);
+    assert.equal(store.load(), false);
+    store.setRoom({ width: 6.2 });
+    assert.equal(store.save(), false);
+    assert.equal(storage.getItem(STORAGE_KEY), original);
+    assert.ok(exportPlanSvg(activeLayout(store.getState())).includes('620'));
+    const restarted = createPlannerStore(initialState, storage);
+    assert.equal(restarted.load(), false);
+    assert.equal(restarted.save(), false);
+    assert.equal(storage.getItem(STORAGE_KEY), original);
+    // Only the owner removing/replacing the unreadable entry permits saving again.
+    storage.values.delete(STORAGE_KEY);
+    assert.equal(store.save(), true);
+    assert.equal(deserializeState(storage.getItem(STORAGE_KEY)!)?.layouts[0].room.width, 6.2);
+  }
+});
+
+test('a failed storage read never permits autosave to replace unseen data', () => {
+  let writes = 0;
+  const storage: StorageLike = { getItem() { throw Error('unavailable'); }, setItem() { writes++; } };
+  const store = createPlannerStore(initialState, storage);
+  assert.equal(store.load(), false);
+  assert.equal(store.save(), false);
+  assert.equal(writes, 0);
+});
+
+test('a transient startup read failure cannot overwrite a valid saved plan after storage recovers', () => {
+  const storage = new MemoryStorage();
+  const saved = fresh();
+  saved.layouts[0].room.width = 6.2;
+  saved.layouts[1].room.width = 6.2;
+  const original = serializeState(saved);
+  storage.setItem(STORAGE_KEY, original);
+  let unavailable = true;
+  const transient: StorageLike = {
+    getItem(key) { if (unavailable) throw Error('temporarily blocked'); return storage.getItem(key); },
+    setItem(key, value) { storage.setItem(key, value); },
+  };
+  const store = createPlannerStore(initialState, transient);
+  assert.equal(store.load(), false);
+  unavailable = false;
+  assert.equal(store.save(), false);
+  assert.equal(storage.getItem(STORAGE_KEY), original);
+  assert.equal(store.load(), true);
+  assert.equal(store.getState().layouts[0].room.width, 6.2);
+  assert.equal(store.save(), true);
+});
+
+test('quota failures preserve saved work and permit a later retry', () => {
+  const storage = new MemoryStorage();
+  const store = createPlannerStore(initialState, storage);
+  assert.equal(store.save(), true);
+  const original = storage.getItem(STORAGE_KEY);
+  let full = true;
+  const limited: StorageLike = { getItem: key => storage.getItem(key), setItem(key, value) { if (full) throw Error('quota'); storage.setItem(key, value); } };
+  const editing = createPlannerStore(initialState, limited);
+  assert.equal(editing.load(), true);
+  editing.setRoom({ width: 6.2 });
+  assert.equal(editing.save(), false);
+  assert.equal(storage.getItem(STORAGE_KEY), original);
+  full = false;
+  assert.equal(editing.save(), true);
+  assert.equal(deserializeState(storage.getItem(STORAGE_KEY)!)?.layouts[0].room.width, 6.2);
+});
+
+test('a recovered empty store permits repeated saves after a failed startup read', () => {
+  const storage = new MemoryStorage();
+  let blocked = true;
+  const transient: StorageLike = { getItem(key) { if (blocked) throw Error('blocked'); return storage.getItem(key); }, setItem(key, value) { storage.setItem(key, value); } };
+  const store = createPlannerStore(initialState, transient);
+  assert.equal(store.load(), false);
+  blocked = false;
+  assert.equal(store.save(), true);
+  store.setRoom({ width: 6.3 });
+  assert.equal(store.save(), true);
+  assert.equal(deserializeState(storage.getItem(STORAGE_KEY)!)?.layouts[0].room.width, 6.3);
+});
