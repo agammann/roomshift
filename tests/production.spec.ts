@@ -1,5 +1,8 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import { initialState } from '../src/model';
+const savedFixture = structuredClone(initialState);
+savedFixture.layouts.forEach(layout => { layout.room.width = 6.2; });
 
 const storageKey = 'roomshift.v1';
 async function openEditor(page: Page) {
@@ -69,6 +72,7 @@ for (const original of ['{broken', '', '{"version":2,"state":{}}']) {
     await setWidth(page, '6.2');
     await page.getByRole('button', { name: 'Changes not saved', exact: true }).click();
     await expect(page.getByText(/Existing saved data is preserved/)).toBeVisible();
+    await expect(page.getByText(/Reloading will lose unsaved edits.*not an editable backup.*other layout or photos/)).toBeVisible();
     expect(await exportPlan(page)).toContain('620');
     expect(await page.evaluate(key => localStorage.getItem(key), storageKey)).toBe(original);
     await page.reload();
@@ -109,8 +113,23 @@ test('art import rejects invalid data and persists a locally generated image', a
   });
   await picker.setInputFiles({ name: 'synthetic.png', mimeType: 'image/png', buffer: Buffer.from(png, 'base64') });
   await expect(page.getByRole('button', { name: 'Remove art photo', exact: true })).toBeVisible();
-  await expect.poll(() => page.evaluate(key => !!JSON.parse(localStorage.getItem(key)!).state.layouts[0].items.find((item: { id: string }) => item.id === 'art-1').photo, storageKey)).toBe(true);
+  await expect.poll(() => page.evaluate(key => !!JSON.parse(localStorage.getItem(key) ?? 'null')?.state.layouts[0].items.find((item: { id: string }) => item.id === 'art-1').photo, storageKey)).toBe(true);
   await page.reload();
   await page.getByRole('button', { name: 'Select Wall art', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Remove art photo', exact: true })).toBeVisible();
+});
+
+test('a transient startup read failure preserves an unseen valid saved plan', async ({ page }) => {
+  await page.addInitScript(({ key, original }) => {
+    localStorage.setItem(key, original);
+    const get = Storage.prototype.getItem;
+    let failOnce = true;
+    Storage.prototype.getItem = function(k) {
+      if (k === key && failOnce) { failOnce = false; throw new DOMException('Synthetic read denial', 'SecurityError'); }
+      return get.call(this, k);
+    };
+  }, { key: storageKey, original: JSON.stringify({ version: 1, state: savedFixture }) });
+  await openEditor(page);
+  await expect(page.getByRole('button', { name: 'Changes not saved', exact: true })).toBeVisible();
+  expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!).state.layouts[0].room.width, storageKey)).toBe(6.2);
 });

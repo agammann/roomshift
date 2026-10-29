@@ -269,6 +269,7 @@ export function createPlannerStore(start: AppState = initialState, storage: Stor
   const listeners = new Set<() => void>();
   const past: AppState[] = [], future: AppState[] = [];
   let editStart: AppState | null = null;
+  let failedLoadRead = false;
   let itemCounter = 0;
   const notify = () => { for (const listener of listeners) listener(); };
   const remember = (snapshot: AppState) => {
@@ -385,8 +386,9 @@ export function createPlannerStore(start: AppState = initialState, storage: Stor
         // A rejected startup load must not become permission to overwrite its bytes.
         // Re-read before every write, including retries after an unavailable store.
         const existing = storage.getItem(STORAGE_KEY);
-        if (existing !== null && !deserializeState(existing)) return false;
+        if (existing !== null && (failedLoadRead || !deserializeState(existing))) return false;
         storage.setItem(STORAGE_KEY, serializeState(state));
+        failedLoadRead = false;
         return true;
       } catch { return false; }
     },
@@ -398,8 +400,9 @@ export function createPlannerStore(start: AppState = initialState, storage: Stor
         const loaded = deserializeState(serialized);
         if (!loaded) return false;
         editStart = null; past.length = 0; future.length = 0;
+        failedLoadRead = false;
         state = freezeState(loaded); notify(); return true;
-      } catch { return false; }
+      } catch { failedLoadRead = true; return false; }
     },
   };
 }
