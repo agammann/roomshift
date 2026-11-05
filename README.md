@@ -26,7 +26,7 @@ pnpm build
 pnpm preview
 ```
 
-`pnpm test` runs the 19 domain tests. `pnpm build` checks TypeScript and writes the production site to `dist/`. `pnpm preview` serves that build at **http://127.0.0.1:4173/**; the development hand emulator is intentionally absent from production builds.
+`pnpm test` runs the domain tests and prints the current totals. `pnpm build` checks TypeScript and writes the production site to `dist/`. `pnpm preview` serves that build at **http://127.0.0.1:4173/**; the development hand emulator is intentionally absent from production builds.
 
 ## Plan a room
 
@@ -77,7 +77,7 @@ There is no application server, paid model API, or automatic reconstruction depe
 
 Version 0.1 focuses on one rectangular room, up to 12 dimensioned belongings, two layouts, manual measurements, hand interactions, and a measured SVG plan. Automatic room reconstruction, measurement from photos, multiple rooms, doors and windows, cloud collaboration, and physical room alignment are outside this version.
 
-Seventeen domain tests pass. Desktop and mobile browser flows and IWER simulated-hand interactions have been exercised. Physical Quest comfort, tracking, and performance remain untested. The demo records actual simulator interactions.
+Run `pnpm test` for the current domain-test result. Desktop and mobile browser flows and IWER simulated-hand interactions have been exercised. Physical Quest comfort, tracking, and performance remain untested. The demo records actual simulator interactions.
 
 Roomshift is submitted to the [Meta VR Start Developer Competition 2026](https://devpost.com/software/roomshift), Productivity track, New Experience division.
 
