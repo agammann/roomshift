@@ -30,6 +30,8 @@ pnpm preview
 
 `pnpm check:three` uses Vite's package and alias resolver to check that the app and IWSDK resolve the same `super-three` runtime, that it matches IWSDK's exact declared dependency, and that TypeScript's resolved Three types use its release line. This check does not evaluate custom plugin resolution hooks or prove headset compatibility. Update the SDK, runtime override, and types together.
 
+`pnpm test:emulator` starts the local development server and checks immersive session entry and exit using the Quest 3 emulator. It does not test hand interactions or replace testing on a headset.
+
 ## Plan a room
 
 1. Enter the room's width, depth, and height in meters. Both layouts use these same room dimensions.
