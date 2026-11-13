@@ -9,6 +9,7 @@
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "test": "node --experimental-strip-types --test src/model.test.ts",
     "typecheck": "tsc --noEmit",
+    "check:three": "node scripts/check-three-alignment.mjs",
     "test:browser": "playwright test",
     "manifest": "node scripts/asset-manifest.mjs"
   },

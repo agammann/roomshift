@@ -28,6 +28,8 @@ pnpm preview
 
 `pnpm test` runs the domain tests and prints the current totals. `pnpm build` checks TypeScript and writes the production site to `dist/`. `pnpm preview` serves that build at **http://127.0.0.1:4173/**; the development hand emulator is intentionally absent from production builds.
 
+`pnpm check:three` uses Vite's package and alias resolver to check that the app and IWSDK resolve the same `super-three` runtime, that it matches IWSDK's exact declared dependency, and that TypeScript's resolved Three types use its release line. This check does not evaluate custom plugin resolution hooks or prove headset compatibility. Update the SDK, runtime override, and types together.
+
 ## Plan a room
 
 1. Enter the room's width, depth, and height in meters. Both layouts use these same room dimensions.
