@@ -21,7 +21,7 @@ jobs:
           node-version: '24'
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test && pnpm typecheck && pnpm build && pnpm manifest
+      - run: pnpm check:three && pnpm test && pnpm typecheck && pnpm build && pnpm manifest
       - name: Package and extract a fresh production consumer
         run: |
           tar -C dist -czf roomshift-production.tgz .
