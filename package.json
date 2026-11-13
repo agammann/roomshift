@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit",
     "check:three": "node scripts/check-three-alignment.mjs",
     "test:browser": "playwright test",
+    "test:emulator": "playwright test --config playwright.emulator.config.ts",
     "manifest": "node scripts/asset-manifest.mjs"
   },
   "dependencies": {
