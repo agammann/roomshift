@@ -5,7 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  three: npm:super-three@0.181.0
+  three: file:vendor/super-three-0.187.0-roomshift.9.tgz
+  '@types/three': 0.187.0
   esbuild: 0.28.2
   zod: 4.6.7
 
@@ -23,15 +24,15 @@ importers:
         specifier: 19.3.1
         version: 19.3.1(react@19.3.1)
       three:
-        specifier: npm:super-three@0.181.0
-        version: super-three@0.181.0
+        specifier: file:vendor/super-three-0.187.0-roomshift.9.tgz
+        version: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
     devDependencies:
       '@iwsdk/scene-composition':
         specifier: 1.0.1
         version: 1.0.1
       '@iwsdk/vite-plugin-dev':
         specifier: 1.0.1
-        version: 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(@types/react@19.3.0)(iwer@2.5.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))(vite@7.3.7)
+        version: 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz))(@types/react@19.3.0)(iwer@2.5.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))(vite@7.3.7)
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -42,14 +43,14 @@ importers:
         specifier: 19.3.0
         version: 19.3.0(@types/react@19.3.0)
       '@types/three':
-        specifier: 0.181.0
-        version: 0.181.0
+        specifier: 0.187.0
+        version: 0.187.0
       '@vitejs/plugin-react':
         specifier: 5.2.0
         version: 5.2.0(vite@7.3.7)
       three-viewport-gizmo:
         specifier: 2.2.0
-        version: 2.2.0(super-three@0.181.0)
+        version: 2.2.0(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
       typescript:
         specifier: 7.0.2
         version: 7.0.2
@@ -150,6 +151,7 @@ packages:
 
   '@drawcall/uikitml@0.1.8':
     resolution: {integrity: sha512-/34V2f5kL39PNMlY+KWCHRW1OrMLHX+fIZR6U6VYrSZ4CMdB66lpUeXX0P/QqdVgNL3Q1ON3yProvJlz7aRlfg==}
+    version: 0.1.8
     hasBin: true
     peerDependencies:
       '@pmndrs/uikit': ^1.0.71
@@ -493,6 +495,7 @@ packages:
 
   '@iwsdk/locomotor@1.0.1':
     resolution: {integrity: sha512-mkPRGNpRUtqwHjxiyPCxSPNlMi4+ShVbVVaONTLIa5MhRPajnFXw/PglDt8r8+5DPHYcR0TzkpUHRffM8lJpNg==}
+    version: 1.0.1
     engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
     peerDependencies:
       three: '>=0.160.0'
@@ -504,12 +507,14 @@ packages:
 
   '@iwsdk/vite-plugin-dev@1.0.1':
     resolution: {integrity: sha512-qCBh/5BAJaNrMZMMF0bIOOkscTIbKgxrQELZL9WzbEM4ga8tKejUYKAYODwYNyAQ+tFyx/kQ4JlTpz+MO89wuw==}
+    version: 1.0.1
     engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
     peerDependencies:
       vite: ^7.0.0
 
   '@iwsdk/xr-input@1.0.1':
     resolution: {integrity: sha512-5YdXrpNmQHxjzYAjBQd/gj3wOtwBo2Np2WNWm3+GQCXmIrZ5HnypLSf8BgGLcagJoKkLPE3ByC2Gq6aAAeUkng==}
+    version: 1.0.1
     engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
     peerDependencies:
       three: '>=0.160.0'
@@ -596,15 +601,18 @@ packages:
 
   '@pmndrs/uikit-horizon@1.0.76':
     resolution: {integrity: sha512-/7jRE2+En6Vjtmu6dGjfduUWcFkAPT5uvOkxGKp4Fi5562v6PdWlwlsmVmLKYsE+blOzF9nETmPOuaxAOKz50g==}
+    version: 1.0.76
 
   '@pmndrs/uikit-lucide@1.0.76':
     resolution: {integrity: sha512-qCPcVFO1qNWFBHq4xQ3s+CtSyvs4QKe61Xkjf2Fk8koiyNY36flVe7Yqhz8zLsj4Sf+O5ziCmFlpMFpGZOusbA==}
+    version: 1.0.76
 
   '@pmndrs/uikit-pub-sub@1.0.76':
     resolution: {integrity: sha512-+DVXInyj+/GAJJDTvElLrVqh8b1kmnPGZW1UQApUIwxZmhzCPmr2cAz0j1/vNyDG5VQNLWWmkItLi50/chKcwA==}
 
   '@pmndrs/uikit@1.0.76':
     resolution: {integrity: sha512-qLE7kGaW5LGE4YdFzCQZaCiB6NvfL9JJ2NxaBSw8Z0lu/0uiUfA49vKHFxk/1qiGvTu+esrDCAydI+H2aN1kYg==}
+    version: 1.0.76
     peerDependencies:
       three: '>=0.162'
 
@@ -829,8 +837,8 @@ packages:
   '@types/stats.js@0.17.4':
     resolution: {integrity: sha512-jIBvWWShCvlBqBNIZt0KAshWpvSjhkwkEu4ZUcASoAvhmrgAUI2t1dXrjSL4xXVLB4FznPrIsX3nKXFl/Dt4vA==}
 
-  '@types/three@0.181.0':
-    resolution: {integrity: sha512-MLF1ks8yRM2k71D7RprFpDb9DOX0p22DbdPqT/uAkc6AtQXjxWCVDjCy23G9t1o8HcQPk7woD2NIyiaWcWPYmA==}
+  '@types/three@0.187.0':
+    resolution: {integrity: sha512-v+vKNarUtk4n2QRZ4+CN5ygMM0ARUjXjIQl0R/unMUfmStFeVqGbgqarbrpoGTXRZoulSH16ePrVJVxPJEbMUA==}
 
   '@types/webxr@0.5.24':
     resolution: {integrity: sha512-h8fgEd/DpoS9CBrjEQXR+dIDraopAEfu4wYVNY2tEPwk60stPWhvZMf4Foo5FakuQ7HFZoa8WceaWFervK2Ovg==}
@@ -966,9 +974,6 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
-
-  '@webgpu/types@0.1.74':
-    resolution: {integrity: sha512-lgiI4hbuLcI9unnm2cL/tvCaQU45dp0xcLWJh5uB/9MBGvIA4F8XIk7nSiBeg+K4xWGYwgZKn80LmERI5CxoTA==}
 
   '@zappar/msdf-generator@1.2.4':
     resolution: {integrity: sha512-6S/MCk0Ky0ipewZJw4xFEzH/2aYfWmPXEkTdBtNyDDfkbicrNwgJgtxZ4SnTDyNe9XHMqDA4sL9srRsgDLRMqA==}
@@ -1134,8 +1139,8 @@ packages:
   lucide@0.468.0:
     resolution: {integrity: sha512-UFbgwji/ZnAV7iTTE4jujyTV7J95AILKyATDUrqOJrMcUGfXvGjw3c1mcuHZUX2oJfkrAGU9KoxkrLQk2jjtiA==}
 
-  meshoptimizer@0.22.0:
-    resolution: {integrity: sha512-IebiK79sqIy+E4EgOr+CAw+Ke8hAspXKzBd0JdgEmPHiAwmvEj2S4h1rfvo+o/BnfEYd/jAOg5IeeIjzlzSnDg==}
+  meshoptimizer@1.1.1:
+    resolution: {integrity: sha512-oRFNWJRDA/WTrVj7NWvqa5HqE1t9MYDj2VaWirQCzCCrAd2GHrqR/sQezCxiWATPNlKTcRaPRHPJwIRoPBAp5g==}
 
   module-details-from-path@1.0.4:
     resolution: {integrity: sha512-EGWKgxALGMgzvxYF1UyGTy0HXX/2vHLkw6+NvDKW2jypWbHpjQuj4UMcqQWXHERJhVGKikolT06G3bcKe4fi7w==}
@@ -1283,19 +1288,19 @@ packages:
   stylis@4.3.6:
     resolution: {integrity: sha512-yQ3rwFWRfwNUY7H5vpU0wfdkNSnvnJinhF9830Swlaxl03zsOjCfmX0ugac+3LtK0lYSgwL/KXc8oYL3mG4YFQ==}
 
-  super-three@0.181.0:
-    resolution: {integrity: sha512-ffemt+MKDPVVkQwG1nzW/5SXHROVqcXCCj/sR6V8nlt7X9qy8vEngoVyeHmsuXjwuSWBBihlVIm+8QUZ1MJDfg==}
-
-  super-three@0.184.0:
-    resolution: {integrity: sha512-9NSv1Ow/k/hevFC/VLeFoejnZSw72iz4e8Nt5LuDiSrkVinh7+r7lfb7Fxsl3aE+2yBP0tPRk1zLqX/aq6EYnQ==}
+  super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz:
+    resolution: {integrity: sha512-Lo6vwEgupp6flqeNX5HPI/Tu1E5bze2bdS+fqvVG3ST76nC2lBdCePKyi9P7pEYFR9zzeAHfy3ETmdnBKDtQnw==, tarball: file:vendor/super-three-0.187.0-roomshift.9.tgz}
+    version: 0.187.0-roomshift.9
 
   three-mesh-bvh@0.9.16:
     resolution: {integrity: sha512-2RK+5MJOaiHJhopURn2CUkOHiF3tFloD0uZBfhebV0CKB7mgVLpWUWaDpOyhNJRDkKKe7x4rRfTHZ32GwpXdkw==}
+    version: 0.9.16
     peerDependencies:
       three: '>= 0.159.0'
 
   three-viewport-gizmo@2.2.0:
     resolution: {integrity: sha512-Jo9Liur1rUmdKk75FZumLU/+hbF+RtJHi1qsKZpntjKlCYScK6tjbYoqvJ9M+IJphrlQJF5oReFW7Sambh0N4Q==}
+    version: 2.2.0
     peerDependencies:
       three: '>=0.162.0 <1.0.0'
 
@@ -1543,12 +1548,12 @@ snapshots:
 
   '@dimforge/rapier3d-compat@0.12.0': {}
 
-  '@drawcall/uikitml@0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(super-three@0.181.0)':
+  '@drawcall/uikitml@0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz))(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)':
     dependencies:
       '@pmndrs/msdfonts': 1.0.76
-      '@pmndrs/uikit': 1.0.76(super-three@0.181.0)
-      '@pmndrs/uikit-horizon': 1.0.76(super-three@0.181.0)
-      '@pmndrs/uikit-lucide': 1.0.76(super-three@0.181.0)
+      '@pmndrs/uikit': 1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
+      '@pmndrs/uikit-horizon': 1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
+      '@pmndrs/uikit-lucide': 1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
       '@preact/signals-core': 1.14.4
       '@sentry/node': 10.76.2(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))
       commander: 14.0.3
@@ -1556,7 +1561,7 @@ snapshots:
       moo: 0.5.3
       nearley: 2.20.1
       playwright: 1.64.0
-      three: super-three@0.181.0
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
       zod: 4.6.7
     transitivePeerDependencies:
       - '@opentelemetry/core'
@@ -1767,7 +1772,7 @@ snapshots:
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
       styled-components: 6.5.3(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      three: super-three@0.184.0
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
       zustand: 5.0.15(@types/react@19.3.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))
     transitivePeerDependencies:
       - '@types/react'
@@ -1779,19 +1784,19 @@ snapshots:
   '@iwsdk/core@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)':
     dependencies:
       '@babylonjs/havok': 1.3.14
-      '@drawcall/uikitml': 0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(super-three@0.181.0)
-      '@iwsdk/locomotor': 1.0.1(super-three@0.181.0)(three-mesh-bvh@0.9.16(super-three@0.181.0))
+      '@drawcall/uikitml': 0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz))(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
+      '@iwsdk/locomotor': 1.0.1(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)(three-mesh-bvh@0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz))
       '@iwsdk/scene-composition': 1.0.1
-      '@iwsdk/xr-input': 1.0.1(super-three@0.181.0)
+      '@iwsdk/xr-input': 1.0.1(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
       '@pmndrs/handle': 6.6.31(@types/react@19.3.0)(react@19.3.1)
       '@pmndrs/pointer-events': 6.6.31
-      '@pmndrs/uikit': 1.0.76(super-three@0.181.0)
+      '@pmndrs/uikit': 1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
       '@preact/signals-core': 1.14.4
-      '@types/three': 0.181.0
+      '@types/three': 0.187.0
       '@types/webxr': 0.5.24
       elics: 3.4.2
-      three: super-three@0.181.0
-      three-mesh-bvh: 0.9.16(super-three@0.181.0)
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
+      three-mesh-bvh: 0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
     transitivePeerDependencies:
       - '@opentelemetry/core'
       - '@opentelemetry/exporter-trace-otlp-http'
@@ -1800,16 +1805,16 @@ snapshots:
       - react
       - supports-color
 
-  '@iwsdk/locomotor@1.0.1(super-three@0.181.0)(three-mesh-bvh@0.9.16(super-three@0.181.0))':
+  '@iwsdk/locomotor@1.0.1(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)(three-mesh-bvh@0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz))':
     dependencies:
-      three: super-three@0.181.0
-      three-mesh-bvh: 0.9.16(super-three@0.181.0)
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
+      three-mesh-bvh: 0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
 
   '@iwsdk/scene-composition@1.0.1': {}
 
-  '@iwsdk/vite-plugin-dev@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(@types/react@19.3.0)(iwer@2.5.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))(vite@7.3.7)':
+  '@iwsdk/vite-plugin-dev@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz))(@types/react@19.3.0)(iwer@2.5.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))(vite@7.3.7)':
     dependencies:
-      '@drawcall/uikitml': 0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@0.181.0))(super-three@0.181.0)
+      '@drawcall/uikitml': 0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz))(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
       '@iwer/devui': 2.5.0(@types/react@19.3.0)(iwer@2.5.0)(use-sync-external-store@1.7.0(react@19.3.1))
       '@iwsdk/core': 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)
       '@iwsdk/scene-composition': 1.0.1
@@ -1820,8 +1825,8 @@ snapshots:
       playwright: 1.64.0
       preact: 10.29.8
       sharp: 0.35.5
-      three: super-three@0.181.0
-      three-viewport-gizmo: 2.2.0(super-three@0.181.0)
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
+      three-viewport-gizmo: 2.2.0(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
       vite: 7.3.7
       ws: 8.22.0
     transitivePeerDependencies:
@@ -1841,11 +1846,11 @@ snapshots:
       - use-sync-external-store
       - utf-8-validate
 
-  '@iwsdk/xr-input@1.0.1(super-three@0.181.0)':
+  '@iwsdk/xr-input@1.0.1(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)':
     dependencies:
       '@pmndrs/pointer-events': 6.6.31
       '@preact/signals-core': 1.14.4
-      three: super-three@0.181.0
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -1929,17 +1934,17 @@ snapshots:
 
   '@pmndrs/pointer-events@6.6.31': {}
 
-  '@pmndrs/uikit-horizon@1.0.76(super-three@0.181.0)':
+  '@pmndrs/uikit-horizon@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)':
     dependencies:
-      '@pmndrs/uikit': 1.0.76(super-three@0.181.0)
-      '@pmndrs/uikit-lucide': 1.0.76(super-three@0.181.0)
+      '@pmndrs/uikit': 1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
+      '@pmndrs/uikit-lucide': 1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
       zod: 4.6.7
     transitivePeerDependencies:
       - three
 
-  '@pmndrs/uikit-lucide@1.0.76(super-three@0.181.0)':
+  '@pmndrs/uikit-lucide@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)':
     dependencies:
-      '@pmndrs/uikit': 1.0.76(super-three@0.181.0)
+      '@pmndrs/uikit': 1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)
     transitivePeerDependencies:
       - three
 
@@ -1947,13 +1952,13 @@ snapshots:
     dependencies:
       '@preact/signals-core': 1.14.4
 
-  '@pmndrs/uikit@1.0.76(super-three@0.181.0)':
+  '@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz)':
     dependencies:
       '@pmndrs/msdfonts': 1.0.76
       '@pmndrs/uikit-pub-sub': 1.0.76
       '@preact/signals-core': 1.14.4
       '@zappar/msdf-generator': 1.2.4
-      three: super-three@0.181.0
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
       yoga-layout: 3.2.1
       zod: 4.6.7
 
@@ -2120,15 +2125,14 @@ snapshots:
 
   '@types/stats.js@0.17.4': {}
 
-  '@types/three@0.181.0':
+  '@types/three@0.187.0':
     dependencies:
       '@dimforge/rapier3d-compat': 0.12.0
       '@tweenjs/tween.js': 23.1.3
       '@types/stats.js': 0.17.4
       '@types/webxr': 0.5.24
-      '@webgpu/types': 0.1.74
       fflate: 0.8.3
-      meshoptimizer: 0.22.0
+      meshoptimizer: 1.1.1
 
   '@types/webxr@0.5.24': {}
 
@@ -2207,8 +2211,6 @@ snapshots:
       vite: 7.3.7
     transitivePeerDependencies:
       - supports-color
-
-  '@webgpu/types@0.1.74': {}
 
   '@zappar/msdf-generator@1.2.4':
     dependencies:
@@ -2352,7 +2354,7 @@ snapshots:
 
   lucide@0.468.0: {}
 
-  meshoptimizer@0.22.0: {}
+  meshoptimizer@1.1.1: {}
 
   module-details-from-path@1.0.4: {}
 
@@ -2512,17 +2514,15 @@ snapshots:
 
   stylis@4.3.6: {}
 
-  super-three@0.181.0: {}
+  super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz: {}
 
-  super-three@0.184.0: {}
-
-  three-mesh-bvh@0.9.16(super-three@0.181.0):
+  three-mesh-bvh@0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz):
     dependencies:
-      three: super-three@0.181.0
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
 
-  three-viewport-gizmo@2.2.0(super-three@0.181.0):
+  three-viewport-gizmo@2.2.0(super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz):
     dependencies:
-      three: super-three@0.181.0
+      three: super-three@file:vendor/super-three-0.187.0-roomshift.9.tgz
 
   tinyglobby@0.2.17:
     dependencies:
