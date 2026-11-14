@@ -1,4 +1,4 @@
-import { ACESFilmicToneMapping, HalfFloatType, NoToneMapping, AmbientLight, ArrayCamera, BoxGeometry, CanvasTexture, CubeTexture, DepthTexture, DirectionalLight, HemisphereLight, LightProbe, Mesh, MeshBasicMaterial, MeshStandardMaterial, OrthographicCamera, PerspectiveCamera, PlaneGeometry, PointLight, RectAreaLight, Scene, SpotLight, UniformsLib, Vector4, WebGLRenderer, WebGLRenderTarget } from 'three';
+import { ACESFilmicToneMapping, HalfFloatType, NoToneMapping, AmbientLight, ArrayCamera, BoxGeometry, CanvasTexture, CubeTexture, DepthTexture, DirectionalLight, HemisphereLight, LightProbe, Mesh, MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, OrthographicCamera, PerspectiveCamera, PlaneGeometry, PointLight, RectAreaLight, Scene, SpotLight, UniformsLib, Vector4, WebGLRenderer, WebGLRenderTarget } from 'three';
 import { WebGLMultiviewRenderTarget } from 'three/src/renderers/WebGLMultiviewRenderTarget.js';
 
 // This exercises the renderer's multiview path with the browser's real OVR
@@ -441,4 +441,53 @@ export function checkMultiviewHdrRejected(effect: boolean, hasTarget: boolean) {
   renderer.xr.isPresenting = false; renderer.xr.enabled = false; if (effect) renderer.setEffects([]);
   let recovered = true; try { renderer.setRenderTarget(null); renderer.render(scene, camera); } catch { recovered = false; }
   const glError = gl.getError(); renderer.dispose(); target.dispose(); return { message, preservedTarget, preservedToneMapping, recovered, glError };
+}
+
+export function checkMultiviewViewCountVariants() {
+  const canvas = document.createElement('canvas'); const gl = canvas.getContext('webgl2'); if (!gl) throw Error('WebGL2 unavailable');
+  const original = gl.getExtension.bind(gl), ovr = original('OVR_multiview2'); if (!ovr) throw Error('OVR unavailable');
+  // @ts-expect-error Test-only real OVR adapter.
+  gl.getExtension = name => name === 'OCULUS_multiview' ? ovr : original(name);
+  // @ts-expect-error multiviewStereo is provided by the fork.
+  const renderer = new WebGLRenderer({ canvas, context: gl, multiviewStereo: true });
+  renderer.xr.enabled = true; (renderer.xr as any).isMultiview = true;
+  const scene = new Scene(); scene.add(new Mesh(new PlaneGeometry(2, 2), new MeshBasicMaterial({ color: 0xff0000 })));
+  const eye = () => { const c = new OrthographicCamera(-1, 1, 1, -1, 0.1, 10); c.position.z = 2; c.viewport = new Vector4(0, 0, 32, 32); c.updateMatrixWorld(); return c; };
+  const targets = [1, 2].map(count => new WebGLMultiviewRenderTarget(32, 32, count));
+  const observed: number[] = [];
+  for (const index of [0, 1, 0]) {
+    const target = targets[index]; const camera = new ArrayCamera(Array.from({ length: target.numViews }, eye)); camera.updateMatrixWorld();
+    renderer.setRenderTarget(target); renderer.render(scene, camera);
+    const program = (renderer.info.programs as any[]).find(p => p === renderer.properties.get((scene.children[0] as Mesh).material).currentProgram);
+    observed.push(program?.numMultiviewViews ?? -1);
+  }
+  const versions = (renderer.info.programs as any[]).map(p => p.numMultiviewViews).sort();
+  const glError = gl.getError(); renderer.setRenderTarget(null); targets.forEach(t => t.dispose()); renderer.dispose(); return { observed, versions, glError };
+}
+
+export function checkMultiviewTransmissionRejected(override: boolean, grouped: boolean, callback: boolean) {
+  const canvas = document.createElement('canvas'); const gl = canvas.getContext('webgl2'); if (!gl) throw Error('WebGL2 unavailable');
+  const original = gl.getExtension.bind(gl), ovr = original('OVR_multiview2'); if (!ovr) throw Error('OVR unavailable');
+  // @ts-expect-error Test-only real OVR adapter.
+  gl.getExtension = name => name === 'OCULUS_multiview' ? ovr : original(name);
+  // @ts-expect-error multiviewStereo is provided by the fork.
+  const renderer = new WebGLRenderer({ canvas, context: gl, multiviewStereo: true });
+  renderer.xr.enabled = true; (renderer.xr as any).isMultiview = true;
+  const scene = new Scene(), glass = new MeshPhysicalMaterial({ transmission: callback ? 0 : 0.8 });
+  const opaque = new MeshBasicMaterial({ color: 0xff0000 });
+  const base = grouped ? [opaque, glass] : override ? opaque : glass;
+  const geometry = new PlaneGeometry(2, 2); if (grouped) { geometry.addGroup(0, 3, 0); geometry.addGroup(3, 3, 1); }
+  const mesh = new Mesh(geometry, base); if (callback) mesh.onBeforeRender = () => { glass.transmission = 0.8; };
+  scene.add(mesh); if (override) scene.overrideMaterial = glass;
+  const eye = () => { const c = new OrthographicCamera(-1, 1, 1, -1, 0.1, 10); c.position.z = 2; c.viewport = new Vector4(0, 0, 32, 32); c.updateMatrixWorld(); return c; };
+  const camera = new ArrayCamera([eye(), eye()]); camera.updateMatrixWorld();
+  const target = new WebGLMultiviewRenderTarget(32, 32, 2); renderer.setRenderTarget(target);
+  let message = ''; try { renderer.render(scene, camera); } catch (e) { message = String(e); }
+  const preservedTarget = renderer.getRenderTarget() === target;
+  scene.overrideMaterial = null; mesh.onBeforeRender = () => {}; glass.transmission = 0;
+  let recovered = true; try { renderer.render(scene, camera); } catch { recovered = false; }
+  renderer.xr.enabled = false; (renderer.xr as any).isMultiview = false; renderer.setRenderTarget(null);
+  glass.transmission = 0.8; (scene.children[0] as Mesh).material = glass;
+  let mono = true; try { renderer.render(scene, eye()); } catch { mono = false; }
+  const glError = gl.getError(); target.dispose(); renderer.dispose(); return { message, preservedTarget, recovered, mono, glError };
 }

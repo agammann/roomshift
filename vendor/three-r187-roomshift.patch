@@ -455,7 +455,7 @@ index f423137..82a3452 100644
  	return this;
  
 diff --git a/src/renderers/webgl/WebGLPrograms.js b/src/renderers/webgl/WebGLPrograms.js
-index 1107d6e..b4868af 100644
+index 1107d6e..0ec3617 100644
 --- a/src/renderers/webgl/WebGLPrograms.js
 +++ b/src/renderers/webgl/WebGLPrograms.js
 @@ -120,6 +120,8 @@ function WebGLPrograms( renderer, environments, extensions, capabilities, bindin
@@ -475,7 +475,15 @@ index 1107d6e..b4868af 100644
  			outputColorSpace: ( currentRenderTarget === null ) ? renderer.outputColorSpace : ( currentRenderTarget.isXRRenderTarget === true ? currentRenderTarget.texture.colorSpace : ColorManagement.workingColorSpace ),
  			alphaToCoverage: !! material.alphaToCoverage,
  
-@@ -614,6 +617,8 @@ function WebGLPrograms( renderer, environments, extensions, capabilities, bindin
+@@ -450,6 +453,7 @@ function WebGLPrograms( renderer, environments, extensions, capabilities, bindin
+ 
+ 	function getProgramCacheKeyParameters( array, parameters ) {
+ 
++		array.push( parameters.numMultiviewViews );
+ 		array.push( parameters.precision );
+ 		array.push( parameters.outputColorSpace );
+ 		array.push( parameters.envMapMode );
+@@ -614,6 +618,8 @@ function WebGLPrograms( renderer, environments, extensions, capabilities, bindin
  			_programLayers.enable( 22 );
  		if ( parameters.hasPositionAttribute )
  			_programLayers.enable( 23 );
@@ -1111,7 +1119,7 @@ index 0000000..016d40e
 +
 +export { WebGLMultiviewRenderTarget };
 diff --git a/src/renderers/WebGLRenderer.js b/src/renderers/WebGLRenderer.js
-index 80f1bd2..0aee269 100644
+index 80f1bd2..f68275f 100644
 --- a/src/renderers/WebGLRenderer.js
 +++ b/src/renderers/WebGLRenderer.js
 @@ -37,6 +37,7 @@ import { WebGLGeometries } from './webgl/WebGLGeometries.js';
@@ -1212,7 +1220,33 @@ index 80f1bd2..0aee269 100644
  
  			// update scene graph
  
-@@ -1782,11 +1817,21 @@ class WebGLRenderer {
+@@ -1724,6 +1759,25 @@ class WebGLRenderer {
+ 			projectObject( scene, camera, 0, _this.sortObjects );
+ 
+ 			currentRenderList.finish();
++			if ( camera.isArrayCamera && xr.enabled && xr.isMultiview ) {
++
++				const overrideMaterial = scene.isScene === true ? scene.overrideMaterial : null;
++				for ( const list of [ currentRenderList.opaque, currentRenderList.transmissive, currentRenderList.transparent ] ) {
++
++					for ( const item of list ) {
++
++						const effectiveMaterial = item.material.allowOverride && overrideMaterial !== null ? overrideMaterial : item.material;
++						if ( effectiveMaterial.transmission > 0 ) {
++
++							throw new Error( 'THREE.WebGLRenderer: transmissive materials are not supported in multiview XR.' );
++
++						}
++
++					}
++
++				}
++
++			}
+ 			if ( _nodesHandler !== null ) _nodesHandler.updateLights( currentRenderState.state.lightsArray );
+ 
+ 			if ( _this.sortObjects === true ) {
+@@ -1782,11 +1836,21 @@ class WebGLRenderer {
  
  					if ( _renderBackground ) background.render( scene );
  
@@ -1237,7 +1271,7 @@ index 80f1bd2..0aee269 100644
  
  					}
  
-@@ -1868,6 +1913,36 @@ class WebGLRenderer {
+@@ -1868,6 +1932,36 @@ class WebGLRenderer {
  
  			}
  
@@ -1274,7 +1308,20 @@ index 80f1bd2..0aee269 100644
  		};
  
  		function projectObject( object, camera, groupOrder, sortObjects ) {
-@@ -2391,6 +2466,7 @@ class WebGLRenderer {
+@@ -2175,6 +2269,12 @@ class WebGLRenderer {
+ 
+ 			material.onBeforeRender( _this, scene, camera, geometry, object, group );
+ 
++			if ( camera.isArrayCamera && xr.enabled && xr.isMultiview && material.transmission > 0 ) {
++
++				throw new Error( 'THREE.WebGLRenderer: transmissive materials are not supported in multiview XR.' );
++
++			}
++
+ 			if ( material.transparent === true && material.side === DoubleSide && material.forceSinglePass === false ) {
+ 
+ 				material.side = BackSide;
+@@ -2391,6 +2491,7 @@ class WebGLRenderer {
  			materialProperties.vertexAlphas = parameters.vertexAlphas;
  			materialProperties.vertexTangents = parameters.vertexTangents;
  			materialProperties.toneMapping = parameters.toneMapping;
@@ -1282,7 +1329,7 @@ index 80f1bd2..0aee269 100644
  
  		}
  
-@@ -2423,6 +2499,8 @@ class WebGLRenderer {
+@@ -2423,6 +2524,8 @@ class WebGLRenderer {
  
  			}
  
@@ -1291,7 +1338,7 @@ index 80f1bd2..0aee269 100644
  			const morphAttribute = geometry.morphAttributes.position || geometry.morphAttributes.normal || geometry.morphAttributes.color;
  			const morphTargetsCount = ( morphAttribute !== undefined ) ? morphAttribute.length : 0;
  
-@@ -2551,6 +2629,10 @@ class WebGLRenderer {
+@@ -2551,6 +2654,10 @@ class WebGLRenderer {
  
  					needsProgramVariant = true;
  
@@ -1302,7 +1349,7 @@ index 80f1bd2..0aee269 100644
  				}
  
  			} else {
-@@ -2605,18 +2687,30 @@ class WebGLRenderer {
+@@ -2605,18 +2712,30 @@ class WebGLRenderer {
  
  				// common camera uniforms
  
@@ -1340,7 +1387,7 @@ index 80f1bd2..0aee269 100644
  
  				const uCamPos = p_uniforms.map.cameraPosition;
  
-@@ -2833,8 +2927,17 @@ class WebGLRenderer {
+@@ -2833,8 +2952,17 @@ class WebGLRenderer {
  
  			// common matrices
  
@@ -1360,7 +1407,7 @@ index 80f1bd2..0aee269 100644
  			p_uniforms.setValue( _gl, 'modelMatrix', object.matrixWorld );
  
  			// UBOs
-@@ -2886,6 +2989,32 @@ class WebGLRenderer {
+@@ -2886,6 +3014,32 @@ class WebGLRenderer {
  
  		}
  
@@ -1393,7 +1440,7 @@ index 80f1bd2..0aee269 100644
  		/**
  		 * Returns the active cube face.
  		 *
-@@ -2925,7 +3054,7 @@ class WebGLRenderer {
+@@ -2925,7 +3079,7 @@ class WebGLRenderer {
  			const renderTargetProperties = properties.get( renderTarget );
  
  			renderTargetProperties.__autoAllocateDepthBuffer = renderTarget.resolveDepthBuffer === false;
@@ -1402,7 +1449,7 @@ index 80f1bd2..0aee269 100644
  
  				// The multisample_render_to_texture extension doesn't work properly if there
  				// are midframe flushes and an external depth buffer. Disable use of the extension.
-@@ -2959,6 +3088,13 @@ class WebGLRenderer {
+@@ -2959,6 +3113,13 @@ class WebGLRenderer {
  		 */
  		this.setRenderTarget = function ( renderTarget, activeCubeFace = 0, activeMipmapLevel = 0 ) {
  

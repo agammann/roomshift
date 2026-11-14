@@ -5,10 +5,10 @@ import path from 'node:path';
 export const intentionalFork = Object.freeze({
   sdkVersion: '1.0.1',
   sdkThree: 'npm:super-three@0.181.0',
-  version: '0.187.0-roomshift.11',
-  archive: 'vendor/super-three-0.187.0-roomshift.11.tgz',
-  archiveSha256: '570f896b9cd8844b672c94bd39a56f3ecb0304be04d93d0c6c661b70848fbf74',
-  installedTreeSha256: '10f998542ff51126cd9866bec9001a8ec6912e10b65923b30d978f172992f5d1',
+  version: '0.187.0-roomshift.13',
+  archive: 'vendor/super-three-0.187.0-roomshift.13.tgz',
+  archiveSha256: 'fe44c9c9cd6e46dad3bd386aabbac66f9831674a06cba2ddca6c67edfe58f124',
+  installedTreeSha256: '4567e949187ac46f182dc92cf715cb94ff1b27abb081e8978554d61bd94e9b9d',
 });
 
 // This exception deliberately applies only to one exact reviewed override.

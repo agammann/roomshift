@@ -90,3 +90,18 @@ for (const effect of [false, true]) {
     });
   }
 }
+
+test('multiview shader programs track the exact view count and reuse the matching variant', async ({ page }) => {
+  await page.goto('/tests-emulator/multiview-harness.html');
+  const result = await page.evaluate(() => (window as any).checkMultiviewViewCountVariants());
+  expect(result.observed).toEqual([1, 2, 1]); expect(result.versions).toEqual([1, 2]); expect(result.glError).toBe(0);
+});
+
+for (const [override, grouped, callback] of [[false, false, false], [true, false, false], [false, true, false], [false, false, true]]) {
+  test(`multiview rejects ${callback ? 'callback-mutated' : grouped ? 'grouped' : override ? 'override' : 'direct'} transmissive materials and recovers`, async ({ page }) => {
+    await page.goto('/tests-emulator/multiview-harness.html');
+    const result = await page.evaluate(([useOverride, useGroups, useCallback]) => (window as any).checkMultiviewTransmissionRejected(useOverride, useGroups, useCallback), [override, grouped, callback]);
+    expect(result.message).toContain('transmissive materials are not supported in multiview XR');
+    expect(result.preservedTarget).toBe(true); expect(result.recovered).toBe(true); expect(result.mono).toBe(true); expect(result.glError).toBe(0);
+  });
+}
