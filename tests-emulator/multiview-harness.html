@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><link rel="icon" href="data:,"><title>Roomshift multiview renderer fixture</title></head>
+  <body>
+    <script type="module">
+      import { runMultiviewFixture, runContextRecovery, compareStereoLighting, checkMultiviewMsaaTarget, checkXrMsaaNegotiation, checkUnsupportedMultiviewMsaa, checkMultiviewOwnership, checkMultiviewOwnershipAfterContextLoss, checkXrExtensionsAfterContextLoss, checkDefaultMultiviewTarget, checkMultiviewHdrRejected, checkMultiviewViewCountVariants, checkMultiviewTransmissionRejected } from './multiview-fixture.ts';
+      import { checkSharedTextureRenderers, checkNestedRenderRecovery } from './renderer-lifecycle-fixture.ts';
+      window.runMultiviewFixture = runMultiviewFixture;
+      window.runContextRecovery = runContextRecovery;
+      window.compareStereoLighting = compareStereoLighting;
+      window.checkMultiviewMsaaTarget = checkMultiviewMsaaTarget;
+      window.checkXrMsaaNegotiation = checkXrMsaaNegotiation;
+      window.checkUnsupportedMultiviewMsaa = checkUnsupportedMultiviewMsaa;
+      window.checkMultiviewOwnership = checkMultiviewOwnership;
+      window.checkMultiviewOwnershipAfterContextLoss = checkMultiviewOwnershipAfterContextLoss;
+      window.checkXrExtensionsAfterContextLoss = checkXrExtensionsAfterContextLoss;
+      window.checkDefaultMultiviewTarget = checkDefaultMultiviewTarget;
+      window.checkMultiviewHdrRejected = checkMultiviewHdrRejected;
+      window.checkMultiviewViewCountVariants = checkMultiviewViewCountVariants;
+      window.checkMultiviewTransmissionRejected = checkMultiviewTransmissionRejected;
+      window.checkSharedTextureRenderers = checkSharedTextureRenderers;
+      window.checkNestedRenderRecovery = checkNestedRenderRecovery;
+    </script>
+  </body>
+</html>

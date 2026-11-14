@@ -3,6 +3,7 @@ import { readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { resolveConfig } from 'vite';
+import { intentionalFork, verifyIntentionalFork } from './three-fork-integrity.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const config = await resolveConfig({ root }, 'build');
@@ -27,7 +28,12 @@ if (runtimePackage.name !== 'super-three') {
 }
 const sdkPackage = JSON.parse(readFileSync(path.join(path.dirname(sdkEntry), '..', 'package.json'), 'utf8'));
 const sdkThree = sdkPackage.dependencies?.three;
-if (sdkThree !== `npm:super-three@${runtimePackage.version}`) {
+const isIntentionalFork = runtimePackage.version === intentionalFork.version;
+if (isIntentionalFork) {
+  verifyIntentionalFork({ sdkVersion: sdkPackage.version, sdkThree, runtimeVersion: runtimePackage.version,
+    archivePath: path.join(root, intentionalFork.archive), packageRoot: path.resolve(path.dirname(appRuntime), '..') });
+  console.log(`Using Roomshift's intentional ${intentionalFork.version} renderer override for IWSDK ${sdkPackage.version}.`);
+} else if (sdkThree !== `npm:super-three@${runtimePackage.version}`) {
   throw Error(`IWSDK declares ${sdkThree ?? 'no Three runtime'}, but the installed override is super-three ${runtimePackage.version}; review SDK compatibility.`);
 }
 
@@ -56,7 +62,7 @@ const releaseLine = (version) => {
   if (!match) throw Error(`Cannot determine the Three release line from ${version}.`);
   return `${match[1]}.${match[2]}`;
 };
-const runtimeLine = releaseLine(runtimePackage.version);
+const runtimeLine = isIntentionalFork ? '0.187' : releaseLine(runtimePackage.version);
 for (const typeRoot of typeRoots) {
   const types = JSON.parse(readFileSync(path.join(typeRoot, 'package.json'), 'utf8'));
   if (types.name !== '@types/three' || releaseLine(types.version) !== runtimeLine) {

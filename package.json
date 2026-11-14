@@ -10,6 +10,7 @@
     "test": "node --experimental-strip-types --test src/model.test.ts",
     "typecheck": "tsc --noEmit",
     "check:three": "node scripts/check-three-alignment.mjs",
+    "test:three-fork": "node --test scripts/three-fork-integrity.test.mjs",
     "test:browser": "playwright test",
     "test:emulator": "playwright test --config playwright.emulator.config.ts",
     "manifest": "node scripts/asset-manifest.mjs"
@@ -18,7 +19,7 @@
     "@iwsdk/core": "1.0.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "three": "npm:super-three@0.181.0"
+    "three": "file:vendor/super-three-0.187.0-roomshift.13.tgz"
   },
   "devDependencies": {
     "@iwsdk/scene-composition": "1.0.1",
@@ -26,14 +27,15 @@
     "@playwright/test": "1.64.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@types/three": "0.181.0",
+    "@types/three": "0.187.0",
     "@vitejs/plugin-react": "5.2.0",
     "three-viewport-gizmo": "2.2.0",
     "typescript": "7.0.2",
     "vite": "7.3.7"
   },
   "overrides": {
-    "three": "npm:super-three@0.181.0"
+    "three": "file:vendor/super-three-0.187.0-roomshift.13.tgz",
+    "@types/three": "0.187.0"
   },
   "packageManager": "pnpm@11.25.0"
 }
