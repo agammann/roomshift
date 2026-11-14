@@ -331,10 +331,31 @@ index 0000000..186b359
 +
 +export { WebGLMultiview };
 diff --git a/src/renderers/webgl/WebGLOutput.js b/src/renderers/webgl/WebGLOutput.js
-index 51ac986..02ddd88 100644
+index 51ac986..184375a 100644
 --- a/src/renderers/webgl/WebGLOutput.js
 +++ b/src/renderers/webgl/WebGLOutput.js
-@@ -296,6 +296,11 @@ function WebGLOutput( type, width, height, antialias, depth, stencil ) {
+@@ -195,12 +195,16 @@ function WebGLOutput( type, width, height, antialias, depth, stencil ) {
+ 
+ 	};
+ 
+-	this.begin = function ( renderer, renderTarget ) {
++	this.wouldBegin = function ( renderer ) {
++
++		return ! _isCompositing && ( renderer.toneMapping !== NoToneMapping || _effects.length > 0 );
+ 
+-		// Don't begin during compositing phase (post-processing effects call render())
+-		if ( _isCompositing ) return false;
++	};
++
++	this.begin = function ( renderer, renderTarget ) {
+ 
+-		if ( renderer.toneMapping === NoToneMapping && _effects.length === 0 ) return false;
++		// Don't begin during compositing phase (post-processing effects call render()).
++		if ( ! this.wouldBegin( renderer ) ) return false;
+ 
+ 		_savedRenderTarget = renderTarget;
+ 
+@@ -296,6 +300,11 @@ function WebGLOutput( type, width, height, antialias, depth, stencil ) {
  
  	};
  
@@ -464,7 +485,7 @@ index 1107d6e..b4868af 100644
  		array.push( _programLayers.mask );
  
 diff --git a/src/renderers/webgl/WebGLTextures.js b/src/renderers/webgl/WebGLTextures.js
-index 98c3a11..80fe316 100644
+index 98c3a11..d54bc69 100644
 --- a/src/renderers/webgl/WebGLTextures.js
 +++ b/src/renderers/webgl/WebGLTextures.js
 @@ -8,6 +8,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
@@ -814,7 +835,7 @@ index 98c3a11..80fe316 100644
 +			}
 +
 +			const renderTargetProperties = properties.get( renderTarget );
-+			let depthStencilTexture = properties.get( renderTarget.depthTexture ).__webglTexture;
++			let depthStencilTexture = renderTarget.depthTexture ? properties.get( renderTarget.depthTexture ).__webglTexture : undefined;
 +			if ( depthStencilTexture === undefined ) depthStencilTexture = renderTargetProperties.__ownedMultiviewDepthTexture;
 +			if ( depthStencilTexture === undefined ) {
 +
@@ -1090,7 +1111,7 @@ index 0000000..016d40e
 +
 +export { WebGLMultiviewRenderTarget };
 diff --git a/src/renderers/WebGLRenderer.js b/src/renderers/WebGLRenderer.js
-index 80f1bd2..5341305 100644
+index 80f1bd2..0aee269 100644
 --- a/src/renderers/WebGLRenderer.js
 +++ b/src/renderers/WebGLRenderer.js
 @@ -37,6 +37,7 @@ import { WebGLGeometries } from './webgl/WebGLGeometries.js';
@@ -1144,10 +1165,18 @@ index 80f1bd2..5341305 100644
  
  		}
  
-@@ -1649,6 +1656,25 @@ class WebGLRenderer {
+@@ -1649,6 +1656,33 @@ class WebGLRenderer {
  
  			if ( _isContextLost === true ) return;
  
++			const isXRPresenting = xr.enabled === true && xr.isPresenting === true;
++
++			if ( isXRPresenting && xr.isMultiview && output !== null && output.wouldBegin( _this ) ) {
++
++				throw new Error( 'THREE.WebGLRenderer: multiview XR HDR output and post-processing effects are not supported.' );
++
++			}
++
 +			const savedStateDepth = renderStateStack.length;
 +			const savedListDepth = renderListStack.length;
 +			const savedState = currentRenderState;
@@ -1170,9 +1199,11 @@ index 80f1bd2..5341305 100644
  			// update node builder if available
  			if ( _nodesHandler !== null ) {
  
-@@ -1660,7 +1686,9 @@ class WebGLRenderer {
+@@ -1658,9 +1692,10 @@ class WebGLRenderer {
  
- 			const isXRPresenting = xr.enabled === true && xr.isPresenting === true;
+ 			// use internal render target for HalfFloatType color buffer (only when tone mapping is enabled)
+ 
+-			const isXRPresenting = xr.enabled === true && xr.isPresenting === true;
  
 -			const useOutput = output !== null && ( _currentRenderTarget === null || isXRPresenting ) && output.begin( _this, _currentRenderTarget );
 +			const useOutput = output !== null && ( _currentRenderTarget === null || isXRPresenting ) &&
@@ -1181,15 +1212,17 @@ index 80f1bd2..5341305 100644
  
  			// update scene graph
  
-@@ -1782,11 +1810,21 @@ class WebGLRenderer {
+@@ -1782,11 +1817,21 @@ class WebGLRenderer {
  
  					if ( _renderBackground ) background.render( scene );
  
 -					for ( let i = 0, l = cameras.length; i < l; i ++ ) {
 +					if ( xr.enabled && xr.isMultiview ) {
-+
+ 
+-						const camera2 = cameras[ i ];
 +						textures.setDeferTextureUploads( true );
-+
+ 
+-						renderScene( currentRenderList, scene, camera2, camera2.viewport );
 +						renderScene( currentRenderList, scene, camera, camera.cameras[ 0 ].viewport );
 +
 +					} else {
@@ -1197,16 +1230,14 @@ index 80f1bd2..5341305 100644
 +						for ( let i = 0, l = cameras.length; i < l; i ++ ) {
 +
 +							const camera2 = cameras[ i ];
- 
--						const camera2 = cameras[ i ];
++
 +							renderScene( currentRenderList, scene, camera2, camera2.viewport );
- 
--						renderScene( currentRenderList, scene, camera2, camera2.viewport );
++
 +						}
  
  					}
  
-@@ -1868,6 +1906,36 @@ class WebGLRenderer {
+@@ -1868,6 +1913,36 @@ class WebGLRenderer {
  
  			}
  
@@ -1243,7 +1274,7 @@ index 80f1bd2..5341305 100644
  		};
  
  		function projectObject( object, camera, groupOrder, sortObjects ) {
-@@ -2391,6 +2459,7 @@ class WebGLRenderer {
+@@ -2391,6 +2466,7 @@ class WebGLRenderer {
  			materialProperties.vertexAlphas = parameters.vertexAlphas;
  			materialProperties.vertexTangents = parameters.vertexTangents;
  			materialProperties.toneMapping = parameters.toneMapping;
@@ -1251,7 +1282,7 @@ index 80f1bd2..5341305 100644
  
  		}
  
-@@ -2423,6 +2492,8 @@ class WebGLRenderer {
+@@ -2423,6 +2499,8 @@ class WebGLRenderer {
  
  			}
  
@@ -1260,7 +1291,7 @@ index 80f1bd2..5341305 100644
  			const morphAttribute = geometry.morphAttributes.position || geometry.morphAttributes.normal || geometry.morphAttributes.color;
  			const morphTargetsCount = ( morphAttribute !== undefined ) ? morphAttribute.length : 0;
  
-@@ -2551,6 +2622,10 @@ class WebGLRenderer {
+@@ -2551,6 +2629,10 @@ class WebGLRenderer {
  
  					needsProgramVariant = true;
  
@@ -1271,7 +1302,7 @@ index 80f1bd2..5341305 100644
  				}
  
  			} else {
-@@ -2605,18 +2680,30 @@ class WebGLRenderer {
+@@ -2605,18 +2687,30 @@ class WebGLRenderer {
  
  				// common camera uniforms
  
@@ -1290,7 +1321,8 @@ index 80f1bd2..5341305 100644
  
 -				}
 +					const reversedDepthBuffer = state.buffers.depth.getReversed();
-+
+ 
+-				p_uniforms.setValue( _gl, 'projectionMatrix', camera.projectionMatrix );
 +					if ( reversedDepthBuffer && camera.reversedDepth !== true ) {
 +
 +						camera._reversedDepth = true;
@@ -1301,15 +1333,14 @@ index 80f1bd2..5341305 100644
 +					p_uniforms.setValue( _gl, 'projectionMatrix', camera.projectionMatrix );
 +
 +					p_uniforms.setValue( _gl, 'viewMatrix', camera.matrixWorldInverse );
- 
--				p_uniforms.setValue( _gl, 'projectionMatrix', camera.projectionMatrix );
++
 +				}
  
 -				p_uniforms.setValue( _gl, 'viewMatrix', camera.matrixWorldInverse );
  
  				const uCamPos = p_uniforms.map.cameraPosition;
  
-@@ -2833,8 +2920,17 @@ class WebGLRenderer {
+@@ -2833,8 +2927,17 @@ class WebGLRenderer {
  
  			// common matrices
  
@@ -1329,7 +1360,7 @@ index 80f1bd2..5341305 100644
  			p_uniforms.setValue( _gl, 'modelMatrix', object.matrixWorld );
  
  			// UBOs
-@@ -2886,6 +2982,32 @@ class WebGLRenderer {
+@@ -2886,6 +2989,32 @@ class WebGLRenderer {
  
  		}
  
@@ -1362,7 +1393,7 @@ index 80f1bd2..5341305 100644
  		/**
  		 * Returns the active cube face.
  		 *
-@@ -2925,7 +3047,7 @@ class WebGLRenderer {
+@@ -2925,7 +3054,7 @@ class WebGLRenderer {
  			const renderTargetProperties = properties.get( renderTarget );
  
  			renderTargetProperties.__autoAllocateDepthBuffer = renderTarget.resolveDepthBuffer === false;
@@ -1371,7 +1402,7 @@ index 80f1bd2..5341305 100644
  
  				// The multisample_render_to_texture extension doesn't work properly if there
  				// are midframe flushes and an external depth buffer. Disable use of the extension.
-@@ -2959,6 +3081,13 @@ class WebGLRenderer {
+@@ -2959,6 +3088,13 @@ class WebGLRenderer {
  		 */
  		this.setRenderTarget = function ( renderTarget, activeCubeFace = 0, activeMipmapLevel = 0 ) {
  

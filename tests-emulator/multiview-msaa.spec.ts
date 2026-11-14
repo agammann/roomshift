@@ -71,3 +71,22 @@ for (const availableAfter of [false, true]) {
     expect(result.textureType).toBe(availableAfter ? 'texture-array' : undefined); expect(result.glError).toBe(0);
   });
 }
+
+test('default multiview target allocates and releases its depth texture', async ({ page }) => {
+  await page.goto('/tests-emulator/multiview-harness.html');
+  const result = await page.evaluate(() => (window as any).checkDefaultMultiviewTarget());
+  expect(result.status).toBe(result.complete); expect(result.owned).toBe(true);
+  expect(result.alive).toBe(false); expect(result.glError).toBe(0);
+});
+
+for (const effect of [false, true]) {
+  for (const hasTarget of [false, true]) {
+    test(`multiview XR rejects HDR ${effect ? 'effects' : 'tone mapping'} with ${hasTarget ? 'an active' : 'no active'} target before mutating state`, async ({ page }) => {
+      await page.goto('/tests-emulator/multiview-harness.html');
+      const result = await page.evaluate(([useEffect, target]) => (window as any).checkMultiviewHdrRejected(useEffect, target), [effect, hasTarget]);
+      expect(result.message).toContain('multiview XR HDR output and post-processing effects are not supported');
+      expect(result.preservedTarget).toBe(true); expect(result.preservedToneMapping).toBe(true);
+      expect(result.recovered).toBe(true); expect(result.glError).toBe(0);
+    });
+  }
+}

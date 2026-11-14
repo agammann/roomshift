@@ -51,7 +51,7 @@ test('a changed installed entry point is rejected without modifying the package 
   try {
     const copy = path.join(fixture.directory, 'renderer');
     cpSync(packageRoot, copy, { recursive: true, errorOnExist: true });
-    writeFileSync(path.join(copy, 'build-port-v9', 'three.module.js'), 'changed\n');
+    writeFileSync(path.join(copy, 'build-port-v11', 'three.module.js'), 'changed\n');
     assert.throws(() => verifyIntentionalFork({ ...options(), packageRoot: copy }), /installed renderer differs/);
   } finally { fixture.cleanup(); }
 });

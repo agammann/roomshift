@@ -1,4 +1,4 @@
-import { AmbientLight, ArrayCamera, BoxGeometry, CanvasTexture, CubeTexture, DepthTexture, DirectionalLight, HemisphereLight, LightProbe, Mesh, MeshBasicMaterial, MeshStandardMaterial, OrthographicCamera, PerspectiveCamera, PlaneGeometry, PointLight, RectAreaLight, Scene, SpotLight, UniformsLib, Vector4, WebGLRenderer, WebGLRenderTarget } from 'three';
+import { ACESFilmicToneMapping, HalfFloatType, NoToneMapping, AmbientLight, ArrayCamera, BoxGeometry, CanvasTexture, CubeTexture, DepthTexture, DirectionalLight, HemisphereLight, LightProbe, Mesh, MeshBasicMaterial, MeshStandardMaterial, OrthographicCamera, PerspectiveCamera, PlaneGeometry, PointLight, RectAreaLight, Scene, SpotLight, UniformsLib, Vector4, WebGLRenderer, WebGLRenderTarget } from 'three';
 import { WebGLMultiviewRenderTarget } from 'three/src/renderers/WebGLMultiviewRenderTarget.js';
 
 // This exercises the renderer's multiview path with the browser's real OVR
@@ -406,4 +406,39 @@ export async function checkXrExtensionsAfterContextLoss(availableAfter: boolean)
     const result = { before, after: (renderer.xr as any).isMultiview, textureType: observed[0]?.textureType, glError: gl.getError() };
     renderer.dispose(); canvas.remove(); return result;
   } finally { if (previous) Object.defineProperty(window, 'XRWebGLBinding', previous); else delete (window as any).XRWebGLBinding; }
+}
+
+export function checkDefaultMultiviewTarget() {
+  const canvas = document.createElement('canvas'); const gl = canvas.getContext('webgl2'); if (!gl) throw Error('WebGL2 unavailable');
+  const original = gl.getExtension.bind(gl); const ovr = original('OVR_multiview2'); if (!ovr) throw Error('OVR unavailable');
+  // @ts-expect-error Test-only adapter for Chromium's real multiview extension.
+  gl.getExtension = name => name === 'OCULUS_multiview' ? ovr : original(name);
+  // @ts-expect-error multiviewStereo is provided by the intentional fork.
+  const renderer = new WebGLRenderer({ canvas, context: gl, multiviewStereo: true });
+  const target = new WebGLMultiviewRenderTarget(64, 64, 2);
+  renderer.setRenderTarget(target); const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+  const owned = renderer.properties.get(target).__ownedMultiviewDepthTexture; renderer.setRenderTarget(null); target.dispose();
+  const result = { status, complete: gl.FRAMEBUFFER_COMPLETE, owned: !!owned, alive: gl.isTexture(owned), glError: gl.getError() };
+  renderer.dispose(); return result;
+}
+
+export function checkMultiviewHdrRejected(effect: boolean, hasTarget: boolean) {
+  const canvas = document.createElement('canvas'); const gl = canvas.getContext('webgl2'); if (!gl) throw Error('WebGL2 unavailable');
+  // @ts-expect-error multiviewStereo is provided by the intentional fork.
+  const renderer = new WebGLRenderer({ canvas, context: gl, multiviewStereo: true, outputBufferType: HalfFloatType });
+  const target = new WebGLRenderTarget(16, 16); if (hasTarget) renderer.setRenderTarget(target);
+  renderer.toneMapping = effect ? NoToneMapping : ACESFilmicToneMapping;
+  if (effect) renderer.setEffects([{ enabled: true, render() {} }] as any);
+  const originalTarget = renderer.getRenderTarget();
+  (renderer.xr as any).getRenderTarget = () => target;
+  renderer.xr.enabled = true; renderer.xr.isPresenting = true;
+  // @ts-expect-error isMultiview is provided by the intentional fork.
+  renderer.xr.isMultiview = true;
+  const scene = new Scene(), camera = new PerspectiveCamera(); let message = '';
+  try { renderer.render(scene, camera); } catch (e) { message = String(e); }
+  const preservedTarget = renderer.getRenderTarget() === originalTarget;
+  const preservedToneMapping = renderer.toneMapping === (effect ? NoToneMapping : ACESFilmicToneMapping);
+  renderer.xr.isPresenting = false; renderer.xr.enabled = false; if (effect) renderer.setEffects([]);
+  let recovered = true; try { renderer.setRenderTarget(null); renderer.render(scene, camera); } catch { recovered = false; }
+  const glError = gl.getError(); renderer.dispose(); target.dispose(); return { message, preservedTarget, preservedToneMapping, recovered, glError };
 }

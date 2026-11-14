@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"><link rel="icon" href="data:,"><title>Roomshift multiview renderer fixture</title></head>
   <body>
     <script type="module">
-      import { runMultiviewFixture, runContextRecovery, compareStereoLighting, checkMultiviewMsaaTarget, checkXrMsaaNegotiation, checkUnsupportedMultiviewMsaa, checkMultiviewOwnership, checkMultiviewOwnershipAfterContextLoss, checkXrExtensionsAfterContextLoss } from './multiview-fixture.ts';
+      import { runMultiviewFixture, runContextRecovery, compareStereoLighting, checkMultiviewMsaaTarget, checkXrMsaaNegotiation, checkUnsupportedMultiviewMsaa, checkMultiviewOwnership, checkMultiviewOwnershipAfterContextLoss, checkXrExtensionsAfterContextLoss, checkDefaultMultiviewTarget, checkMultiviewHdrRejected } from './multiview-fixture.ts';
       import { checkSharedTextureRenderers, checkNestedRenderRecovery } from './renderer-lifecycle-fixture.ts';
       window.runMultiviewFixture = runMultiviewFixture;
       window.runContextRecovery = runContextRecovery;
@@ -14,6 +14,8 @@
       window.checkMultiviewOwnership = checkMultiviewOwnership;
       window.checkMultiviewOwnershipAfterContextLoss = checkMultiviewOwnershipAfterContextLoss;
       window.checkXrExtensionsAfterContextLoss = checkXrExtensionsAfterContextLoss;
+      window.checkDefaultMultiviewTarget = checkDefaultMultiviewTarget;
+      window.checkMultiviewHdrRejected = checkMultiviewHdrRejected;
       window.checkSharedTextureRenderers = checkSharedTextureRenderers;
       window.checkNestedRenderRecovery = checkNestedRenderRecovery;
     </script>
