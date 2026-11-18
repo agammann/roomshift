@@ -2,22 +2,22 @@
 
 **Rearrange your actual belongings before moving anything heavy.**
 
-Roomshift is a WebXR room planner for one rectangular room and the furniture you already own. Enter measurements, try an arrangement in a tabletop model, inspect it at life size, compare two layouts, and export a measured 2D plan. It is a focused Productivity prototype for the Meta VR Start Developer Competition 2026.
+Roomshift is a browser and WebXR planner for one rectangular room and the furniture you already own. Enter measurements, try an arrangement in a tabletop model, inspect it at life size, compare two layouts, and export a measured 2D plan.
 
-[Try the public prototype](https://roomshift-vr.alx21.chatgpt.site/) · [Watch the simulator demonstration](https://www.youtube.com/watch?v=e3_5WSzcj50)
+[Open Roomshift](https://roomshift-vr.alx21.chatgpt.site/) · [Watch the simulator demonstration](https://www.youtube.com/watch?v=e3_5WSzcj50)
 
 All room and item measurements come from the user. Photos change the appearance of wall art; they do not establish dimensions.
 
 ## Run locally
 
-The project has been checked with Node.js 24.19.0 and pnpm. From this directory:
+Use Node.js 24.19.0 and pnpm 11.25.0, the version pinned in `package.json`. Clone this repository and run these commands in its root:
 
 ```powershell
-pnpm install
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open **http://localhost:5173/** in a desktop browser. The server binds to loopback, and port 5173 must be free. Use the same host and port when returning to saved work: `localhost` and `127.0.0.1` have separate browser storage.
+Open **http://127.0.0.1:5173/** in a desktop browser with WebGL 2 for the 3D view. The server binds to loopback, and port 5173 must be free. Use the same host and port when returning to saved work. Browsers store data separately for `localhost` and `127.0.0.1`.
 
 ```powershell
 pnpm test
@@ -75,7 +75,7 @@ Simulator testing exercises interaction and state changes. It does not establish
 
 The app is a React 19 and Vite 7 static frontend. `src/model.ts` owns the framework-independent state, validation, collision geometry, history, persistence, and SVG export. `src/model.test.ts` tests those contracts. `src/objects.ts` builds dimensioned furniture, and `src/scene.ts` shares one IWSDK scene and store between browser and immersive modes. `src/spatial-ui.ts` implements hand ray and fingertip controls. `src/App.tsx` provides the browser editor.
 
-There is no application server, paid model API, or automatic reconstruction dependency. The production entry and immersive scene are split, but the IWSDK scene remains a large download: the latest local build reports approximately 234 kB for the entry JavaScript and 6.60 MB for the scene JavaScript before compression, with additional SDK assets. Performance on a headset and production network still needs testing.
+There is no application server, paid model API, or automatic reconstruction dependency. The production entry loads the larger IWSDK scene separately. Run `pnpm manifest` after building to inspect the current transfer assets. Headset and production-network performance still need testing.
 
 ## Scope and validation
 
@@ -93,6 +93,6 @@ Developed by [agammann](https://github.com/agammann).
 
 ## Routine CI and platform evidence
 
-`Verify production` runs model tests, TypeScript, a frozen production build, and sandboxed Chromium tests against a production archive extracted outside the source checkout. Browser fixtures use fresh local storage, no model/provider calls and no injected WebXR runtime. They cover edit/restart, undo/redo, repeated dialog dismissal, invalid input, art import, SVG export, unreadable data preservation and storage-quota recovery. Run them locally after `pnpm build` with `pnpm exec playwright install chromium && pnpm test:browser`.
+`Verify production` installs the frozen lockfile and checks the Three runtime, fork integrity, model tests, TypeScript, and the production build. Sandboxed Chromium tests use a production archive extracted outside the source checkout. They cover edit and reload, undo and redo, repeated dialog dismissal, invalid input, art import, SVG export, unreadable data preservation, and storage-quota recovery. Install Chromium with `pnpm exec playwright install chromium`, then run `pnpm test:browser` after building.
 
-`pnpm manifest` records production asset sizes and SHA-256 identities in `reports/asset-manifest.json`. These bytes are not measured load time, frame time or a performance threshold. CI is a desktop/browser functional gate, **not** an IWER interaction or Quest hardware gate. A physical Quest model, Quest OS/Browser versions, secure test origin, and measured loading/frame/thermal/hand-tracking observations are still required before performance optimization or headset claims.
+CI separately runs `pnpm test:emulator` against the development server for IWER simulated-hand interactions and renderer checks. Physical Quest testing remains outstanding. `pnpm manifest` records production asset sizes and SHA-256 hashes in `reports/asset-manifest.json`. Measuring load time, frame time, thermal behavior, and tracking requires a physical headset on a secure test origin.
