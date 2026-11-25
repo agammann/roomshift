@@ -28,8 +28,8 @@ importers:
         version: super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz
     devDependencies:
       '@iwsdk/scene-composition':
-        specifier: 1.0.1
-        version: 1.0.1
+        specifier: 1.1.0
+        version: 1.1.0
       '@iwsdk/vite-plugin-dev':
         specifier: 1.0.1
         version: 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz))(@types/react@19.3.0)(iwer@2.5.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))(vite@7.3.8)
@@ -503,6 +503,10 @@ packages:
 
   '@iwsdk/scene-composition@1.0.1':
     resolution: {integrity: sha512-T0uOt3/1pA2gtXi0mZU834e/RA9EzmazF8J3RLU+oqvNxpGjfKAhkzeOFay+/iBJ2nIZ/+iPodGnRTTmyo7/Iw==}
+    engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
+
+  '@iwsdk/scene-composition@1.1.0':
+    resolution: {integrity: sha512-YGjwZAppAoP9gxKxr7kN3EmjRbOdMlGY576S8qbdUOJkSuCzjcFyvZWwj1mntZlKpMvz1/qe3umRLbKox4j8EA==}
     engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
 
   '@iwsdk/vite-plugin-dev@1.0.1':
@@ -1821,6 +1825,8 @@ snapshots:
       three-mesh-bvh: 0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)
 
   '@iwsdk/scene-composition@1.0.1': {}
+
+  '@iwsdk/scene-composition@1.1.0': {}
 
   '@iwsdk/vite-plugin-dev@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz))(@types/react@19.3.0)(iwer@2.5.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))(vite@7.3.8)':
     dependencies:
