@@ -15,8 +15,8 @@ importers:
   .:
     dependencies:
       '@iwsdk/core':
-        specifier: 1.0.1
-        version: 1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)
+        specifier: 1.1.0
+        version: 1.1.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)
       react:
         specifier: 19.3.1
         version: 19.3.1
@@ -489,21 +489,9 @@ packages:
     peerDependencies:
       iwer: ^2.7.0
 
-  '@iwsdk/core@1.0.1':
-    resolution: {integrity: sha512-SwFPbwn+YcVFTbzwHg1CpEokha4Hem6q5vm5S1LZbqvFMBsdalRYOnpc7zTINmj09jzVF5aeuv/uIduDq59f+A==}
-    engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
-
   '@iwsdk/core@1.1.0':
     resolution: {integrity: sha512-dhCLuuthRG2tufmbUsiqqv/Fi/hwJcRAe3QroWZJE0ypYPNpLdUDKoCukoALMHj4PBuT+eVe4JoPChnlpmWYbw==}
     engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
-
-  '@iwsdk/locomotor@1.0.1':
-    resolution: {integrity: sha512-mkPRGNpRUtqwHjxiyPCxSPNlMi4+ShVbVVaONTLIa5MhRPajnFXw/PglDt8r8+5DPHYcR0TzkpUHRffM8lJpNg==}
-    version: 1.0.1
-    engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
-    peerDependencies:
-      three: '>=0.160.0'
-      three-mesh-bvh: '>=0.9.1'
 
   '@iwsdk/locomotor@1.1.0':
     resolution: {integrity: sha512-nKBlZlbN0Nakc04PfMVzKiFokfqYyhGVC/b6QtjOCU3u52RPrvjwk6a2NFzuYPftmSBoDiuwNheVc/FjZ/+9zw==}
@@ -512,10 +500,6 @@ packages:
     peerDependencies:
       three: '>=0.160.0'
       three-mesh-bvh: '>=0.9.1'
-
-  '@iwsdk/scene-composition@1.0.1':
-    resolution: {integrity: sha512-T0uOt3/1pA2gtXi0mZU834e/RA9EzmazF8J3RLU+oqvNxpGjfKAhkzeOFay+/iBJ2nIZ/+iPodGnRTTmyo7/Iw==}
-    engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
 
   '@iwsdk/scene-composition@1.1.0':
     resolution: {integrity: sha512-YGjwZAppAoP9gxKxr7kN3EmjRbOdMlGY576S8qbdUOJkSuCzjcFyvZWwj1mntZlKpMvz1/qe3umRLbKox4j8EA==}
@@ -527,13 +511,6 @@ packages:
     engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
     peerDependencies:
       vite: ^7.0.0
-
-  '@iwsdk/xr-input@1.0.1':
-    resolution: {integrity: sha512-5YdXrpNmQHxjzYAjBQd/gj3wOtwBo2Np2WNWm3+GQCXmIrZ5HnypLSf8BgGLcagJoKkLPE3ByC2Gq6aAAeUkng==}
-    version: 1.0.1
-    engines: {node: '>=20.19.0 <21.0.0-0 || >=22.12.0 <23.0.0-0 || >=24.0.0'}
-    peerDependencies:
-      three: '>=0.160.0'
 
   '@iwsdk/xr-input@1.1.0':
     resolution: {integrity: sha512-0WflaTz9gwIg1XuDV1G6tTAfmi1IqdGGv28BDPVBaUNhtLgSoEDQbg4HcEpO8gv02j+NlRJ1fYbQABh639Iz7A==}
@@ -1794,30 +1771,6 @@ snapshots:
       - react-native
       - use-sync-external-store
 
-  '@iwsdk/core@1.0.1(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)':
-    dependencies:
-      '@babylonjs/havok': 1.3.14
-      '@drawcall/uikitml': 0.1.8(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@pmndrs/uikit@1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz))(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)
-      '@iwsdk/locomotor': 1.0.1(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)(three-mesh-bvh@0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz))
-      '@iwsdk/scene-composition': 1.0.1
-      '@iwsdk/xr-input': 1.0.1(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)
-      '@pmndrs/handle': 6.6.31(@types/react@19.3.0)(react@19.3.1)
-      '@pmndrs/pointer-events': 6.6.31
-      '@pmndrs/uikit': 1.0.76(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)
-      '@preact/signals-core': 1.14.4
-      '@types/three': 0.187.0
-      '@types/webxr': 0.5.24
-      elics: 3.4.2
-      three: super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz
-      three-mesh-bvh: 0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)
-    transitivePeerDependencies:
-      - '@opentelemetry/core'
-      - '@opentelemetry/exporter-trace-otlp-http'
-      - '@types/react'
-      - immer
-      - react
-      - supports-color
-
   '@iwsdk/core@1.1.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@types/react@19.3.0)(react@19.3.1)':
     dependencies:
       '@babylonjs/havok': 1.3.14
@@ -1842,17 +1795,10 @@ snapshots:
       - react
       - supports-color
 
-  '@iwsdk/locomotor@1.0.1(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)(three-mesh-bvh@0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz))':
-    dependencies:
-      three: super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz
-      three-mesh-bvh: 0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)
-
   '@iwsdk/locomotor@1.1.0(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)(three-mesh-bvh@0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz))':
     dependencies:
       three: super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz
       three-mesh-bvh: 0.9.16(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)
-
-  '@iwsdk/scene-composition@1.0.1': {}
 
   '@iwsdk/scene-composition@1.1.0': {}
 
@@ -1889,12 +1835,6 @@ snapshots:
       - supports-color
       - use-sync-external-store
       - utf-8-validate
-
-  '@iwsdk/xr-input@1.0.1(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)':
-    dependencies:
-      '@pmndrs/pointer-events': 6.6.31
-      '@preact/signals-core': 1.14.4
-      three: super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz
 
   '@iwsdk/xr-input@1.1.0(super-three@file:vendor/super-three-0.187.0-roomshift.13.tgz)':
     dependencies:
