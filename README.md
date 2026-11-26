@@ -28,7 +28,7 @@ pnpm preview
 
 `pnpm test` runs the domain tests and prints the current totals. `pnpm build` checks TypeScript and writes the production site to `dist/`. `pnpm preview` serves that build at **http://127.0.0.1:4173/**; the development hand emulator is intentionally absent from production builds.
 
-`pnpm check:three` uses Vite's package and alias resolver to check that the app and IWSDK resolve the same Three runtime and that TypeScript's resolved declarations use its release line. Roomshift intentionally overrides IWSDK 1.0.1's declared `super-three` 0.181.0 with the locally maintained 0.187.0 fork in `vendor/`. The check allows only that exact SDK declaration and verifies the fork archive and every installed file; other SDK and runtime changes require review. This override is not a Meta-supported SDK combination. The check does not evaluate custom Vite plugin resolution hooks or prove headset compatibility. Run `pnpm test:three-fork` for guard regression tests and see [the fork's provenance and rebuild instructions](vendor/README.md).
+`pnpm check:three` uses Vite's package and alias resolver to check that the app and IWSDK resolve the same Three runtime and that TypeScript's resolved declarations use its release line. Roomshift intentionally overrides IWSDK 1.1.0's declared `super-three` 0.185.0 with the locally maintained 0.187.0 fork in `vendor/`. The check allows only that exact SDK declaration and verifies the installed SDK renderer patch, the fork archive, and every installed fork file. Other SDK and runtime changes require review. Custom Vite plugin resolution and physical headset compatibility require separate verification. Run `pnpm test:three-fork` for guard regression tests and see [the fork's provenance and rebuild instructions](vendor/README.md).
 
 `pnpm test:emulator` starts the local development server and checks immersive session entry and exit, an emulated hand interaction, and a dynamic art update using the Quest 3 emulator. It also tests context restoration and two-view rendering using Chromium's `OVR_multiview2` with a **test-only** adapter for the extension name. These checks do not reproduce the headset's `OCULUS_multiview` implementation and do not replace testing on a physical device.
 
@@ -47,7 +47,7 @@ Undo and redo work for geometry edits, additions, removals, room changes, and co
 
 ## Simulated hands and WebXR
 
-Development uses Meta's Immersive Web SDK 1.0.1 and its Vite development plugin with IWER configured as a Meta Quest 3. Emulator injection is enabled on localhost during development. The app selects simulated hands and exposes **Enter VR** once the runtime reports immersive VR support.
+Development uses Meta's Immersive Web SDK 1.1.0 and its Vite development plugin with IWER configured as a Meta Quest 3. Emulator injection is enabled on localhost during development. The app selects simulated hands and exposes **Enter VR** once the runtime reports immersive VR support.
 
 Open the development URL, choose the app's **Enter VR** button, and use the visible simulator controls to move the simulated head and hands. Pinch to grab a belonging in tabletop view. In life-size view, point at a belonging and pinch to move it at a distance. Point and pinch, or touch, the in-room panel to activate controls.
 

@@ -1,0 +1,29 @@
+diff --git a/dist/runtime/deferred-texture-uploads.js b/dist/runtime/deferred-texture-uploads.js
+index 93b46f55105b666caf4ce6cbac30fe443e9980df..04a50c45acaa49ad94fa582732b615b8979169dc 100644
+--- a/dist/runtime/deferred-texture-uploads.js
++++ b/dist/runtime/deferred-texture-uploads.js
+@@ -27,21 +27,9 @@ const HOOK = 'setDeferTextureUploads';
+  * changes shape, nothing is captured and the renderer is returned unmodified.
+  */
+ function createWebGLRenderer(parameters) {
+-    let textures;
+-    const release = captureDeferredTextureUploads((captured) => {
+-        textures = captured;
+-    });
+-    let renderer;
+-    try {
+-        renderer = new WebGLRenderer(parameters);
+-    }
+-    finally {
+-        release();
+-    }
+-    if (textures) {
+-        flushDeferredTextureUploads(renderer, textures);
+-    }
+-    return renderer;
++    // Roomshift's pinned renderer owns the texture queue across nested renders.
++    // Flushing it here can commit an upload before the outer render succeeds.
++    return new WebGLRenderer(parameters);
+ }
+ /**
+  * @internal

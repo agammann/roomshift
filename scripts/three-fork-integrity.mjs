@@ -3,8 +3,10 @@ import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
 export const intentionalFork = Object.freeze({
-  sdkVersion: '1.0.1',
-  sdkThree: 'npm:super-three@0.181.0',
+  sdkVersion: '1.1.0',
+  sdkThree: 'npm:super-three@0.185.0',
+  sdkRenderer: 'dist/runtime/deferred-texture-uploads.js',
+  sdkRendererSha256: 'f9b67a473777c5195b93e3d5437625b6b16e09729602a044e5e6747267d7f305',
   version: '0.187.0-roomshift.13',
   archive: 'vendor/super-three-0.187.0-roomshift.13.tgz',
   archiveSha256: 'fe44c9c9cd6e46dad3bd386aabbac66f9831674a06cba2ddca6c67edfe58f124',
@@ -13,12 +15,15 @@ export const intentionalFork = Object.freeze({
 
 // This exception deliberately applies only to one exact reviewed override.
 // A new SDK, a changed archive, or changed installed files requires review.
-export function verifyIntentionalFork({ sdkVersion, sdkThree, runtimeVersion, archivePath, packageRoot }) {
+export function verifyIntentionalFork({ sdkVersion, sdkThree, sdkPackageRoot, runtimeVersion, archivePath, packageRoot }) {
   if (runtimeVersion !== intentionalFork.version) throw Error('The renderer is not the reviewed fork version.');
   if (sdkVersion !== intentionalFork.sdkVersion || sdkThree !== intentionalFork.sdkThree) {
     throw Error(`The reviewed renderer fork only covers IWSDK ${intentionalFork.sdkVersion} declaring ${intentionalFork.sdkThree}; review this SDK update.`);
   }
   const digest = bytes => createHash('sha256').update(bytes).digest('hex');
+  if (digest(readFileSync(path.join(sdkPackageRoot, intentionalFork.sdkRenderer))) !== intentionalFork.sdkRendererSha256) {
+    throw Error('The IWSDK renderer adapter differs from the reviewed patch; reinstall and verify its contents.');
+  }
   if (digest(readFileSync(archivePath)) !== intentionalFork.archiveSha256) {
     throw Error('The reviewed renderer archive changed; verify provenance and update its pinned digest.');
   }

@@ -28,3 +28,20 @@ test('a caught nested render failure does not upload its abandoned texture', asy
   expect(result.glError).toBe(0);
   expect(errors).toEqual([]);
 });
+
+test('the IWSDK renderer defers a parent texture until its outer render succeeds', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await page.goto('/tests-emulator/multiview-harness.html');
+  await page.waitForFunction(() => typeof (window as any).checkSdkRendererNestedUpload === 'function');
+  const result = await page.evaluate(() => (window as any).checkSdkRendererNestedUpload());
+  expect(result.aborted).toBe(true);
+  expect(result.versionAfterNested).toBeNull();
+  expect(result.versionAfterAbort).toBeNull();
+  expect(result.uploadsAfterAbort).toBe(0);
+  expect(result.recoveredVersion).toBe(result.expectedVersion);
+  expect(result.recoveredUploads).toBe(1);
+  expect(result.glError).toBe(0);
+  expect(errors).toEqual([]);
+});

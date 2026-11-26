@@ -26,11 +26,12 @@ const runtimePackage = JSON.parse(readFileSync(path.join(path.dirname(appRuntime
 if (runtimePackage.name !== 'super-three') {
   throw Error(`Expected the IWSDK super-three runtime; found ${runtimePackage.name}.`);
 }
-const sdkPackage = JSON.parse(readFileSync(path.join(path.dirname(sdkEntry), '..', 'package.json'), 'utf8'));
+const sdkPackageRoot = path.resolve(path.dirname(sdkEntry), '..');
+const sdkPackage = JSON.parse(readFileSync(path.join(sdkPackageRoot, 'package.json'), 'utf8'));
 const sdkThree = sdkPackage.dependencies?.three;
 const isIntentionalFork = runtimePackage.version === intentionalFork.version;
 if (isIntentionalFork) {
-  verifyIntentionalFork({ sdkVersion: sdkPackage.version, sdkThree, runtimeVersion: runtimePackage.version,
+  verifyIntentionalFork({ sdkVersion: sdkPackage.version, sdkThree, sdkPackageRoot, runtimeVersion: runtimePackage.version,
     archivePath: path.join(root, intentionalFork.archive), packageRoot: path.resolve(path.dirname(appRuntime), '..') });
   console.log(`Using Roomshift's intentional ${intentionalFork.version} renderer override for IWSDK ${sdkPackage.version}.`);
 } else if (sdkThree !== `npm:super-three@${runtimePackage.version}`) {
