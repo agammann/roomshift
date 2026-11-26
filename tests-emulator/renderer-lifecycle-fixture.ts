@@ -1,15 +1,16 @@
 import { ArrayCamera, CanvasTexture, DepthTexture, Mesh, MeshBasicMaterial, OrthographicCamera, PlaneGeometry, Scene, Vector4, WebGLRenderer } from 'three';
 import { WebGLMultiviewRenderTarget } from 'three/src/renderers/WebGLMultiviewRenderTarget.js';
 
-function rendererFixture() {
+type RendererOptions = NonNullable<ConstructorParameters<typeof WebGLRenderer>[0]> & { multiviewStereo: boolean };
+
+function rendererFixture(createRenderer = (options: RendererOptions) => new WebGLRenderer(options)) {
   const canvas = document.createElement('canvas'); canvas.width = canvas.height = 64; document.body.appendChild(canvas);
   const gl = canvas.getContext('webgl2', { antialias: false }); if (!gl) throw Error('WebGL2 is unavailable');
   const ovr = gl.getExtension('OVR_multiview2'); if (!ovr) throw Error('OVR_multiview2 is unavailable');
   const getExtension = gl.getExtension.bind(gl);
   // @ts-expect-error Test-only OVR adaptation does not emulate Oculus hardware.
   gl.getExtension = name => name === 'OCULUS_multiview' ? ovr : getExtension(name);
-  // @ts-expect-error multiviewStereo is provided by the intentional fork.
-  const renderer = new WebGLRenderer({ canvas, context: gl, multiviewStereo: true });
+  const renderer = createRenderer({ canvas, context: gl, multiviewStereo: true });
   renderer.setSize(64, 64, false);
   const target = new WebGLMultiviewRenderTarget(64, 64, 2, { samples: 0, depthTexture: new DepthTexture(64, 64) });
   renderer.setRenderTarget(target);
@@ -87,4 +88,54 @@ export function checkNestedRenderRecovery() {
   const glError = f.gl.getError();
   f.renderer.dispose(); f.target.dispose(); f.canvas.remove();
   return { caught, pixels, innerVersion, outerVersion, expectedVersion: outerTexture.version, glError };
+}
+
+export async function checkSdkRendererNestedUpload() {
+  // Use the same internal renderer factory as IWSDK's world initializer.
+  const sdkRendererPath: string = '/node_modules/@iwsdk/core/dist/runtime/deferred-texture-uploads.js';
+  const { createWebGLRenderer }: { createWebGLRenderer: (options: RendererOptions) => WebGLRenderer } =
+    await import(/* @vite-ignore */ sdkRendererPath);
+  const f = rendererFixture(createWebGLRenderer);
+  const image = document.createElement('canvas');
+  image.width = image.height = 2;
+  const texture = new CanvasTexture(image);
+  const geometry = new PlaneGeometry(2, 2);
+  const texturedMaterial = new MeshBasicMaterial({ map: texture });
+  const plainMaterial = new MeshBasicMaterial();
+  try {
+    const outer = new Scene();
+    const textured = new Mesh(geometry, texturedMaterial);
+    const callback = new Mesh(geometry, plainMaterial);
+    textured.renderOrder = 0;
+    callback.renderOrder = 1;
+    outer.add(textured, callback);
+    const nested = new Scene();
+    nested.add(new Mesh(geometry, plainMaterial));
+
+    const version = () => f.renderer.properties.get(texture).__version ?? null;
+    let uploads = 0;
+    texture.onUpdate = () => { uploads++; };
+    let versionAfterNested: number | null | undefined;
+    const expectedFailure = Error('synthetic outer render failure');
+    callback.onBeforeRender = () => {
+      f.renderer.render(nested, f.camera);
+      versionAfterNested = version();
+      throw expectedFailure;
+    };
+    let aborted = false;
+    try { f.renderer.render(outer, f.camera); } catch (error) {
+      if (error !== expectedFailure) throw error;
+      aborted = true;
+    }
+    const versionAfterAbort = version();
+    const uploadsAfterAbort = uploads;
+    outer.remove(callback);
+    f.renderer.render(outer, f.camera);
+
+    return { aborted, versionAfterNested, versionAfterAbort, uploadsAfterAbort,
+      recoveredVersion: version(), recoveredUploads: uploads, expectedVersion: texture.version, glError: f.gl.getError() };
+  } finally {
+    texture.dispose(); geometry.dispose(); texturedMaterial.dispose(); plainMaterial.dispose();
+    f.renderer.dispose(); f.target.dispose(); f.canvas.remove();
+  }
 }

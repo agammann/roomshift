@@ -4,7 +4,7 @@
   <body>
     <script type="module">
       import { runMultiviewFixture, runContextRecovery, compareStereoLighting, checkMultiviewMsaaTarget, checkXrMsaaNegotiation, checkUnsupportedMultiviewMsaa, checkMultiviewOwnership, checkMultiviewOwnershipAfterContextLoss, checkXrExtensionsAfterContextLoss, checkDefaultMultiviewTarget, checkMultiviewHdrRejected, checkMultiviewViewCountVariants, checkMultiviewTransmissionRejected } from './multiview-fixture.ts';
-      import { checkSharedTextureRenderers, checkNestedRenderRecovery } from './renderer-lifecycle-fixture.ts';
+      import { checkSharedTextureRenderers, checkNestedRenderRecovery, checkSdkRendererNestedUpload } from './renderer-lifecycle-fixture.ts';
       window.runMultiviewFixture = runMultiviewFixture;
       window.runContextRecovery = runContextRecovery;
       window.compareStereoLighting = compareStereoLighting;
@@ -20,6 +20,7 @@
       window.checkMultiviewTransmissionRejected = checkMultiviewTransmissionRejected;
       window.checkSharedTextureRenderers = checkSharedTextureRenderers;
       window.checkNestedRenderRecovery = checkNestedRenderRecovery;
+      window.checkSdkRendererNestedUpload = checkSdkRendererNestedUpload;
     </script>
   </body>
 </html>

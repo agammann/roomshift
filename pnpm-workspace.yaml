@@ -5,3 +5,5 @@ overrides:
   zod: 4.6.7
 allowBuilds:
   esbuild: true
+patchedDependencies:
+  '@iwsdk/core@1.1.0': patches/@iwsdk__core@1.1.0.patch
